@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Skapa evenemang</title>
+</head>
+<body>
+    <h1>Skapa evenemang</h1>
+    
+    <form id="event-form">
+        <div>
+            <label>Titel:</label>
+            <input type="text" name="title" required>
+        </div>
+
+        <div>
+            <label>Evenemangsdatum:</label>
+            <input type="date" name="eventDate" required>
+        </div>
+        <div>
+            <label>Sista svarsdatum:</label>
+            <input type="date" name="responseDeadline" required>
+        </div>
+        
+        <div>
+            <label>Beskrivning:</label>
+            <textarea name="description"></textarea>
+        </div>
+        
+        <div>
+            <label>Deltagarlista (CSV):</label>
+            <input type="file" name="csv" accept=".csv" required>
+            <small>CSV-filen måste ha en kolumn "email"</small>
+        </div>
+        
+        <button type="submit">
+            Skapa evenemang
+        </button>
+    </form>
+
+    <script type="module" src="../scripts/pages/create-event.js"></script>
+</body>
+</html>
