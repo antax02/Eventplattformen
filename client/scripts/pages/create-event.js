@@ -12,10 +12,20 @@ const processCSV = (file) => {
       const emails = [];
       const rows = e.target.result.split('\n');
       
+      const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
+      if (!headers.includes('email')) {
+        reject('CSV-filen måste ha en "email" kolumn');
+        return;
+      }
+      
+      const emailIndex = headers.indexOf('email');
+      
       rows.forEach((row, index) => {
         if (index === 0) return;
-        const email = row.split(',')[0]?.trim();
-        if (validateEmail(email)) {
+        const columns = row.split(',');
+        const email = columns[emailIndex]?.trim();
+        
+        if (email && validateEmail(email)) {
           emails.push(email);
         }
       });
