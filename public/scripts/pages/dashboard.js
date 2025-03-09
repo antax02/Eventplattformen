@@ -9,6 +9,7 @@ const createEventCard = (event) => `
     <p>Datum: ${new Date(event.eventDate.seconds * 1000).toLocaleDateString('sv-SE')}</p>
     <p>Anmälningsslut: ${new Date(event.responseDeadline.seconds * 1000).toLocaleDateString('sv-SE')}</p>
     <p>Antal inbjudna: ${event.invitations.length}</p>
+    <a href="./registration.html?eventId=${event.id}&token=${event.invitations[0].token}">Testlänk för deltagare</a>
   </div>
 `;
 

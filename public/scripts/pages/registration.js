@@ -7,7 +7,7 @@ const eventId = urlParams.get('eventId');
 const token = urlParams.get('token');
 
 if (!eventId || !token) {
-  window.location.href = '/client/public/index.html';
+  window.location.href = './index.html';
 }
 
 form.addEventListener('submit', async (e) => {
