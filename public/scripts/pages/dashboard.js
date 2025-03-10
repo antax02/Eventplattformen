@@ -3,11 +3,23 @@ import { collection, query, where, getDocs } from "https://www.gstatic.com/fireb
 
 const eventsList = document.getElementById('events-list');
 
+const formatDateTime = (timestamp) => {
+  if (!timestamp || !timestamp.seconds) return "N/A";
+  
+  const date = new Date(timestamp.seconds * 1000);
+  const options = { 
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  };
+  
+  return date.toLocaleString('sv-SE', options);
+};
+
 const createEventCard = (event) => `
   <div class="event-card">
     <h3>${event.title}</h3>
-    <p>Datum: ${new Date(event.eventDate.seconds * 1000).toLocaleDateString('sv-SE')}</p>
-    <p>Anmälningsslut: ${new Date(event.responseDeadline.seconds * 1000).toLocaleDateString('sv-SE')}</p>
+    <p>Datum: ${formatDateTime(event.eventDate)}</p>
+    <p>Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
     <p>Antal inbjudna: ${event.invitations.length}</p>
     <a href="./edit-event.html?eventId=${event.id}">
       <button>Redigera</button>
@@ -33,5 +45,7 @@ auth.onAuthStateChanged(async (user) => {
       console.error("Error fetching events:", error);
       eventsList.innerHTML = "<div>Kunde inte ladda evenemang</div>";
     }
+  } else {
+    window.location.href = './login.html';
   }
 });

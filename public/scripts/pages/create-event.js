@@ -51,6 +51,16 @@ const generateInvitations = (emails, deadline) => {
   }));
 };
 
+const createDateTimeFromInputs = (dateInput, timeInput) => {
+  // Combine date and time inputs into a single Date object
+  const [year, month, day] = dateInput.split('-').map(num => parseInt(num, 10));
+  const [hours, minutes] = timeInput.split(':').map(num => parseInt(num, 10));
+  
+  // Create date in local timezone
+  const date = new Date(year, month - 1, day, hours, minutes);
+  return date;
+};
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -59,23 +69,32 @@ form.addEventListener('submit', async (e) => {
     if (!user) throw new Error('Du måste vara inloggad');
 
     const today = new Date();
-    const eventDate = new Date(form.eventDate.value + 'T00:00:00');
-    const responseDeadline = new Date(form.responseDeadline.value + 'T23:59:59');
+    
+    // Create date objects using the new combined date+time inputs
+    const eventDateTime = createDateTimeFromInputs(
+      form.eventDate.value, 
+      form.eventTime.value
+    );
+    
+    const responseDateTime = createDateTimeFromInputs(
+      form.responseDeadline.value, 
+      form.responseTime.value
+    );
 
-    if (eventDate < today) {
+    if (eventDateTime < today) {
       throw new Error('Evenemangsdatumet har redan passerat');
     }
 
-    if (responseDeadline < today) {
+    if (responseDateTime < today) {
       throw new Error('Sista svarsdatum har redan passerat');
     }
 
-    if (responseDeadline >= eventDate) {
+    if (responseDateTime >= eventDateTime) {
       throw new Error('Sista svarsdatum måste vara före evenemanget');
     }
 
-    const firestoreEventDate = Timestamp.fromDate(eventDate);
-    const firestoreDeadline = Timestamp.fromDate(responseDeadline);
+    const firestoreEventDate = Timestamp.fromDate(eventDateTime);
+    const firestoreDeadline = Timestamp.fromDate(responseDateTime);
 
     const csvFile = form.csv.files[0];
     if (!csvFile) throw new Error('Välj en CSV-fil');
@@ -99,7 +118,13 @@ form.addEventListener('submit', async (e) => {
       uploadBytes(ref(storage, `events/${eventId}/participants.csv`), csvFile)
     ]);
 
-    alert(`Evenemang skapat med ${emails.length} inbjudna!\nSista anmälningsdag: ${responseDeadline.toLocaleDateString('sv-SE')}`);
+    // Format the confirmation with both date and time
+    const options = { 
+      dateStyle: 'medium', 
+      timeStyle: 'short'
+    };
+    
+    alert(`Evenemang skapat med ${emails.length} inbjudna!\nSista anmälningsdag: ${responseDateTime.toLocaleString('sv-SE', options)}`);
     window.location.href = './dashboard.html';
 
   } catch (error) {
