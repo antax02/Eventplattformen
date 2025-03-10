@@ -9,7 +9,6 @@ const createEventCard = (event) => `
     <p>Datum: ${new Date(event.eventDate.seconds * 1000).toLocaleDateString('sv-SE')}</p>
     <p>Anmälningsslut: ${new Date(event.responseDeadline.seconds * 1000).toLocaleDateString('sv-SE')}</p>
     <p>Antal inbjudna: ${event.invitations.length}</p>
-    <a href="./registration.html?eventId=${event.id}&token=${event.invitations[0].token}">Testlänk för deltagare</a>
   </div>
 `;
 
@@ -18,11 +17,11 @@ auth.onAuthStateChanged(async (user) => {
     try {
       const q = query(collection(db, "events"), where("owner", "==", user.uid));
       const querySnapshot = await getDocs(q);
-      
+
       eventsList.innerHTML = querySnapshot.docs
         .map(doc => createEventCard({ id: doc.id, ...doc.data() }))
         .join('');
-        
+
     } catch (error) {
       console.error("Error fetching events:", error);
       eventsList.innerHTML = "<div>Kunde inte ladda evenemang</div>";
