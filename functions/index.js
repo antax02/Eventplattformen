@@ -1,9 +1,8 @@
 const sgMail = require('@sendgrid/mail');
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
-const { defineSecret } = require("firebase-functions/params"); // Missing import
+const { defineSecret } = require("firebase-functions/params");
 const { initializeApp } = require("firebase-admin/app");
 
-// Initialize Firebase Admin and define secret OUTSIDE the handler
 initializeApp();
 const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
 
@@ -19,40 +18,39 @@ exports.onEventCreated = onDocumentCreated(
     const eventId = event.params.eventId;
     const invitations = eventData.invitations || [];
 
-  console.log("🎉 New event created! ID:", eventId);
-  console.log("📋 Event details:", {
-    title: eventData.title,
-    owner: eventData.owner,
-    invitation_count: invitations.length
-  });
-  
-  if (invitations.length > 0) {
-    const previewEmails = invitations.slice(0, 3).map(invite => invite.email).join(", ");
-    const more = invitations.length > 3 ? ` (+ ${invitations.length - 3} more)` : "";
-    console.log(`📨 Invited emails (${invitations.length}): ${previewEmails}${more}`);
+    console.log("🎉 New event created! ID:", eventId);
+    
+    if (invitations.length > 0) {
+      const sendEmailPromises = invitations.map(invite => {
+        const registrationLink = `https://eventplattform-f9c17.web.app/registration.html?eventId=${eventId}&token=${invite.token}`;
+        const msg = {
+          to: invite.email,
+          from: {
+            email: 'noreply@em3217.eventplattformen.com',
+            name: 'Event Plattformen'
+          },
+          subject: `Inbjudan till ${eventData.title}`,
+          text: `Hej,\n\nDu är inbjuden till "${eventData.title}".\n\n` +
+                `${eventData.description || 'Inge fler detaljer'}\n\n` +
+                `Anmäl dig här: ${registrationLink}\n\n`,
+          html: `<p>Hej,</p>
+                 <p>Du är inbjuden till <strong>${eventData.title}</strong>.</p>
+                 ${eventData.description ? `<p>Detaljer: ${eventData.description}</p>` : ''}
+                 <p><a href="${registrationLink}">Tryck här för att registrera</a></p>`
+        };
+        return sgMail.send(msg);
+      });
 
-    const sendEmailPromises = invitations.map(invite => {
-      const registrationLink = `https://eventplattform-f9c17.web.app/registration.html?eventId=${eventId}&token=${invite.token}`;
-      const msg = {
-        to: invite.email,
-        from: 'anton.axelsson@edu.huddinge.se',
-        subject: `You're invited to ${eventData.title}`,
-        text: `Hello,\n\nYou are invited to the event "${eventData.title}" organized by ${eventData.owner}.\n${
-          eventData.description ? "Details: " + eventData.description : ""
-        }\n\nPlease register here: ${registrationLink}\n\nThank you!`
-      };
-      return sgMail.send(msg);
-    });
-
-    try {
-      await Promise.all(sendEmailPromises);
-      console.log('Emails sent successfully!');
-    } catch (error) {
-      console.error('Error sending emails:', error.response?.body?.errors || error);
+      try {
+        await Promise.all(sendEmailPromises);
+        console.log(`✅ Successfully sent ${invitations.length} emails`);
+      } catch (error) {
+        console.error('❌ Email sending error:', error.response?.body?.errors || error);
+      }
+    } else {
+      console.log("⚠️ No invitations to send");
     }
-  } else {
-    console.log("⚠️ No emails invited for this event");
-  }
 
-  return null;
-});
+    return null;
+  }
+);
