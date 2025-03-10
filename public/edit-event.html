@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Redigera evenemang</title>
+</head>
+<body>
+  <h1>Redigera evenemang</h1>
+
+  <form id="edit-event-form">
+    <div>
+      <label>Titel:</label>
+      <input type="text" name="title" required>
+    </div>
+
+    <div>
+      <label>Evenemangsdatum:</label>
+      <input type="date" name="eventDate" required>
+    </div>
+
+    <div>
+      <label>Sista svarsdatum:</label>
+      <input type="date" name="responseDeadline" required>
+    </div>
+
+    <div>
+      <label>Beskrivning:</label>
+      <textarea name="description"></textarea>
+    </div>
+
+    <div>
+      <label>Lägg till deltagare (CSV):</label>
+      <input type="file" name="csv" accept=".csv">
+      <small>CSV-filen måste ha en kolumn "email"</small>
+    </div>
+
+    <div>
+      <label>
+        <input type="checkbox" name="resend">
+        Skicka igen till redan inbjudna
+      </label>
+    </div>
+
+    <button type="submit">Uppdatera evenemang</button>
+  </form>
+
+  <script type="module" src="./scripts/pages/edit-event.js"></script>
+</body>
+</html>
