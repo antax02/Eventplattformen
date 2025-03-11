@@ -30,9 +30,15 @@
         </div>
         
         <div>
-            <label>Deltagarlista (CSV):</label>
-            <input type="file" name="csv" accept=".csv" required>
+            <label>Lägg till via CSV-fil:</label>
+            <input type="file" name="csv" accept=".csv">
             <small>CSV-filen måste ha en kolumn "email"</small>
+        </div>
+
+        <div>
+            <label>Eller ange e-postadresser manuellt:</label>
+            <textarea name="manualEmails" placeholder="Ange en e-postadress per rad"></textarea>
+            <small>En e-postadress per rad</small>
         </div>
         
         <button type="submit">

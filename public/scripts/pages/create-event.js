@@ -38,6 +38,20 @@ const processCSV = (file) => {
   });
 };
 
+const processManualEmails = (text) => {
+  const emails = [];
+  const lines = text.split('\n');
+  
+  lines.forEach(line => {
+    const email = line.trim();
+    if (email && validateEmail(email)) {
+      emails.push(email);
+    }
+  });
+  
+  return emails;
+};
+
 const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
@@ -96,9 +110,30 @@ form.addEventListener('submit', async (e) => {
     const firestoreEventDate = Timestamp.fromDate(eventDateTime);
     const firestoreDeadline = Timestamp.fromDate(responseDateTime);
 
+    // Process emails from CSV and manual entry
+    let emails = [];
+    
+    // Process CSV if provided
     const csvFile = form.csv.files[0];
-    if (!csvFile) throw new Error('Välj en CSV-fil');
-    const emails = await processCSV(csvFile);
+    if (csvFile) {
+      const csvEmails = await processCSV(csvFile);
+      emails = emails.concat(csvEmails);
+    }
+    
+    // Process manual emails if provided
+    const manualEmailsText = form.manualEmails.value.trim();
+    if (manualEmailsText) {
+      const manualEmails = processManualEmails(manualEmailsText);
+      emails = emails.concat(manualEmails);
+    }
+    
+    // Ensure we have at least one email
+    if (emails.length === 0) {
+      throw new Error('Ange minst en giltig e-postadress via CSV eller manuell inmatning');
+    }
+    
+    // Remove duplicates
+    emails = [...new Set(emails)];
     
     const eventId = crypto.randomUUID();
     const invitations = generateInvitations(emails, firestoreDeadline);
@@ -113,10 +148,15 @@ form.addEventListener('submit', async (e) => {
       invitations
     };
 
-    await Promise.all([
-      setDoc(doc(db, 'events', eventId), eventData),
-      uploadBytes(ref(storage, `events/${eventId}/participants.csv`), csvFile)
-    ]);
+    // Only upload CSV if it was provided
+    if (csvFile) {
+      await Promise.all([
+        setDoc(doc(db, 'events', eventId), eventData),
+        uploadBytes(ref(storage, `events/${eventId}/participants.csv`), csvFile)
+      ]);
+    } else {
+      await setDoc(doc(db, 'events', eventId), eventData);
+    }
 
     // Format the confirmation with both date and time
     const options = { 

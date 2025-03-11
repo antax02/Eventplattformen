@@ -1,12 +1,28 @@
 import { auth, db } from '../firebase.js';
-import { doc, getDoc, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+import { doc, getDoc, updateDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const eventId = urlParams.get('eventId');
-const form = document.getElementById('edit-event-form');
-const storage = getStorage();
 
+const form = document.getElementById('edit-event-form');
+const invitationsTableBody = document.getElementById('invitations-table-body');
+
+// Process manual emails from textarea
+const processManualEmails = (text) => {
+  const emails = [];
+  const lines = text.split('\n');
+  
+  lines.forEach(line => {
+    const email = line.trim();
+    if (email && validateEmail(email)) {
+      emails.push(email);
+    }
+  });
+  
+  return emails;
+};
+
+// CSV processing function
 const processCSV = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -40,10 +56,12 @@ const processCSV = (file) => {
   });
 };
 
+// Validate email format
 const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
+// Generate new invitation objects
 const generateInvitations = (emails, deadline) => {
   return emails.map(email => ({
     email,
@@ -53,84 +71,108 @@ const generateInvitations = (emails, deadline) => {
   }));
 };
 
-let currentEventData = null;
+const formatDateTime = (timestamp) => {
+  if (!timestamp || !timestamp.seconds) return "N/A";
+  
+  const date = new Date(timestamp.seconds * 1000);
+  const options = { 
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  };
+  
+  return date.toLocaleString('sv-SE', options);
+};
+
+// Function to display the invitations
+const displayInvitations = (invitations) => {
+  if (!invitations || invitations.length === 0) {
+    invitationsTableBody.innerHTML = '<tr><td colspan="4">Inga inbjudningar hittades</td></tr>';
+    return;
+  }
+
+  const rows = invitations.map(inv => {
+    const respondedText = inv.responded ? 'Svarat' : 'Inte svarat';
+    const respondedStyle = inv.responded ? 'color: green;' : 'color: orange;';
+    const respondedDate = inv.respondedAt ? ` (${formatDateTime(inv.respondedAt)})` : '';
+    
+    return `
+      <tr>
+        <td>${inv.email}</td>
+        <td style="${respondedStyle}">${respondedText}${respondedDate}</td>
+        <td>${inv.name || '-'}</td>
+        <td>${inv.phone || '-'}</td>
+      </tr>
+    `;
+  }).join('');
+
+  invitationsTableBody.innerHTML = rows;
+};
 
 const loadEvent = async () => {
   if (!eventId) {
     alert("Ingen händelse-ID angiven!");
-    window.location.href = './dashboard.html';
     return;
   }
 
-  try {
-    const eventRef = doc(db, "events", eventId);
-    const eventSnap = await getDoc(eventRef);
+  const eventRef = doc(db, "events", eventId);
+  const eventSnap = await getDoc(eventRef);
 
-    if (eventSnap.exists()) {
-      const eventData = eventSnap.data();
-      currentEventData = eventData;
+  if (eventSnap.exists()) {
+    const eventData = eventSnap.data();
 
-      const user = auth.currentUser;
-      if (user.uid !== eventData.owner) {
-        alert("Du har inte behörighet att redigera detta evenemang!");
-        window.location.href = './dashboard.html';
-        return;
-      }
+    form.title.value = eventData.title;
+    form.description.value = eventData.description || '';
 
-      form.title.value = eventData.title;
-      form.description.value = eventData.description || '';
-
-      const formatDateInput = (timestamp) => {
-        if (!timestamp || !timestamp.seconds) return "";
-        
-        const date = new Date(timestamp.seconds * 1000);
-        
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        
-        return `${year}-${month}-${day}`;
-      };
+    // Split date and time from Firestore timestamps
+    const formatDateInput = (timestamp) => {
+      if (!timestamp || !timestamp.seconds) return "";
       
-      const formatTimeInput = (timestamp) => {
-        if (!timestamp || !timestamp.seconds) return "";
-        
-        const date = new Date(timestamp.seconds * 1000);
-        
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        
-        return `${hours}:${minutes}`;
-      };
+      // Create date in local timezone
+      const date = new Date(timestamp.seconds * 1000);
+      
+      // Format date as YYYY-MM-DD for the date input
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      
+      return `${year}-${month}-${day}`;
+    };
+    
+    const formatTimeInput = (timestamp) => {
+      if (!timestamp || !timestamp.seconds) return "";
+      
+      // Create date in local timezone
+      const date = new Date(timestamp.seconds * 1000);
+      
+      // Format time as HH:MM for the time input
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      return `${hours}:${minutes}`;
+    };
 
-      form.eventDate.value = formatDateInput(eventData.eventDate);
-      form.eventTime.value = formatTimeInput(eventData.eventDate);
-      form.responseDeadline.value = formatDateInput(eventData.responseDeadline);
-      form.responseTime.value = formatTimeInput(eventData.responseDeadline);
+    form.eventDate.value = formatDateInput(eventData.eventDate);
+    form.eventTime.value = formatTimeInput(eventData.eventDate);
+    form.responseDeadline.value = formatDateInput(eventData.responseDeadline);
+    form.responseTime.value = formatTimeInput(eventData.responseDeadline);
 
-    } else {
-      alert("Evenemanget hittades inte!");
-      window.location.href = './dashboard.html';
-    }
-  } catch (error) {
-    console.error("Fel vid laddning av evenemang:", error);
-    alert("Kunde inte ladda evenemanget: " + error.message);
-    window.location.href = './dashboard.html';
+    // Display invitations
+    displayInvitations(eventData.invitations);
+
+  } else {
+    alert("Evenemanget hittades inte!");
   }
 };
 
-auth.onAuthStateChanged(async (user) => {
-  if (user) {
-    await loadEvent();
-  } else {
-    window.location.href = './login.html';
-  }
-});
+document.addEventListener('DOMContentLoaded', loadEvent);
 
+// Helper function to create date objects from form inputs
 const createDateTimeFromInputs = (dateInput, timeInput) => {
+  // Combine date and time inputs into a single Date object
   const [year, month, day] = dateInput.split('-').map(num => parseInt(num, 10));
   const [hours, minutes] = timeInput.split(':').map(num => parseInt(num, 10));
   
+  // Create date in local timezone
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
@@ -140,7 +182,15 @@ form.addEventListener('submit', async (e) => {
 
   try {
     const eventRef = doc(db, "events", eventId);
+    const eventSnap = await getDoc(eventRef);
     
+    if (!eventSnap.exists()) {
+      throw new Error("Evenemanget hittades inte!");
+    }
+    
+    const eventData = eventSnap.data();
+    
+    // Create date objects using the combined date+time inputs
     const eventDateTime = createDateTimeFromInputs(
       form.eventDate.value, 
       form.eventTime.value
@@ -151,6 +201,7 @@ form.addEventListener('submit', async (e) => {
       form.responseTime.value
     );
     
+    // Validate dates
     const today = new Date();
     
     if (eventDateTime < today) {
@@ -165,39 +216,54 @@ form.addEventListener('submit', async (e) => {
       throw new Error('Sista svarsdatum måste vara före evenemanget');
     }
 
-    const firestoreDeadline = Timestamp.fromDate(responseDateTime);
-    
     const updatedData = {
       title: form.title.value,
       description: form.description.value,
       eventDate: Timestamp.fromDate(eventDateTime),
-      responseDeadline: firestoreDeadline
+      responseDeadline: Timestamp.fromDate(responseDateTime)
     };
 
-    if (form.csv.files.length > 0) {
-      const csvFile = form.csv.files[0];
-      const newEmails = await processCSV(csvFile);
+    // Gather new emails
+    let newEmails = [];
+    
+    // Process CSV if provided
+    const csvFile = form.csv.files[0];
+    if (csvFile) {
+      const csvEmails = await processCSV(csvFile);
+      newEmails = newEmails.concat(csvEmails);
+    }
+    
+    // Process manual emails if provided
+    const manualEmailsText = form.manualEmails.value.trim();
+    if (manualEmailsText) {
+      const manualEmails = processManualEmails(manualEmailsText);
+      newEmails = newEmails.concat(manualEmails);
+    }
+    
+    // If we have new emails, filter out duplicates and create new invitations
+    if (newEmails.length > 0) {
+      // Get current email addresses to avoid duplicates
+      const currentEmails = eventData.invitations.map(inv => inv.email);
       
-      const currentInvitations = currentEventData.invitations || [];
+      // Filter out emails that are already invited
+      const uniqueNewEmails = newEmails.filter(email => !currentEmails.includes(email));
       
-      const existingEmails = currentInvitations.map(inv => inv.email);
-      const newUniqueEmails = newEmails.filter(email => !existingEmails.includes(email));
-      
-      if (newUniqueEmails.length === 0) {
-        throw new Error('Alla e-postadresser i CSV-filen finns redan i inbjudningslistan');
+      // If we have unique new emails, add them to invitations
+      if (uniqueNewEmails.length > 0) {
+        const newInvitations = generateInvitations(uniqueNewEmails, updatedData.responseDeadline);
+        updatedData.invitations = [...eventData.invitations, ...newInvitations];
+      } else {
+        // No new emails to add
+        updatedData.invitations = eventData.invitations;
       }
-      
-      const newInvitations = generateInvitations(newUniqueEmails, firestoreDeadline);
-      
-      updatedData.invitations = [...currentInvitations, ...newInvitations];
-      
-      if (form.resend && form.resend.checked) {
-        updatedData.resendToAll = true;
-      }
-      
-      await uploadBytes(ref(storage, `events/${eventId}/participants.csv`), csvFile);
-      
-      console.log(`Added ${newUniqueEmails.length} new invitations`);
+    } else {
+      // No new emails provided, keep existing invitations
+      updatedData.invitations = eventData.invitations;
+    }
+
+    // Add resendToAll flag if checkbox is checked
+    if (form.resend && form.resend.checked) {
+      updatedData.resendToAll = true;
     }
 
     await updateDoc(eventRef, updatedData);

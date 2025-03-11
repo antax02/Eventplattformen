@@ -2,6 +2,7 @@ import { auth, db } from '../firebase.js';
 import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const eventsList = document.getElementById('events-list');
+const logoutBtn = document.getElementById('logoutBtn');
 
 const formatDateTime = (timestamp) => {
   if (!timestamp || !timestamp.seconds) return "N/A";
@@ -15,17 +16,33 @@ const formatDateTime = (timestamp) => {
   return date.toLocaleString('sv-SE', options);
 };
 
-const createEventCard = (event) => `
-  <div class="event-card">
-    <h3>${event.title}</h3>
-    <p>Datum: ${formatDateTime(event.eventDate)}</p>
-    <p>Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
-    <p>Antal inbjudna: ${event.invitations.length}</p>
-    <a href="./edit-event.html?eventId=${event.id}">
-      <button>Redigera</button>
-    </a>
-  </div>
-`;
+const createEventCard = (event) => {
+  // Calculate response statistics
+  const totalInvitations = event.invitations.length;
+  const responded = event.invitations.filter(inv => inv.responded).length;
+  const responseRate = totalInvitations > 0 ? Math.round((responded / totalInvitations) * 100) : 0;
+  
+  return `
+    <div class="event-card">
+      <h3>${event.title}</h3>
+      <p>Datum: ${formatDateTime(event.eventDate)}</p>
+      <p>Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
+      <p>Inbjudna: ${totalInvitations} personer</p>
+      <p>Svar: ${responded} av ${totalInvitations} (${responseRate}%)</p>
+      <a href="./edit-event.html?eventId=${event.id}">
+        <button>Redigera</button>
+      </a>
+    </div>
+  `;
+};
+
+logoutBtn.addEventListener('click', () => {
+  auth.signOut().then(() => {
+    window.location.href = './login.html';
+  }).catch(error => {
+    console.error("Utloggningsfel:", error);
+  });
+});
 
 auth.onAuthStateChanged(async (user) => {
   if (user) {

@@ -31,9 +31,15 @@
     </div>
 
     <div>
-      <label>Lägg till deltagare (CSV):</label>
+      <label>Lägg till deltagare via CSV:</label>
       <input type="file" name="csv" accept=".csv">
       <small>CSV-filen måste ha en kolumn "email"</small>
+    </div>
+
+    <div>
+      <label>Eller lägg till e-postadresser manuellt:</label>
+      <textarea name="manualEmails" placeholder="Ange en e-postadress per rad"></textarea>
+      <small>En e-postadress per rad</small>
     </div>
 
     <div>
@@ -45,6 +51,25 @@
 
     <button type="submit">Uppdatera evenemang</button>
   </form>
+
+  <div id="invitations-list">
+    <h2>Inbjudna deltagare</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>E-post</th>
+          <th>Status</th>
+          <th>Namn</th>
+          <th>Telefon</th>
+        </tr>
+      </thead>
+      <tbody id="invitations-table-body">
+        <tr>
+          <td colspan="4">Laddar deltagare...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <script type="module" src="./scripts/pages/edit-event.js"></script>
 </body>
