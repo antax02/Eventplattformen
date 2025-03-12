@@ -1,9 +1,23 @@
 import { auth, db } from '../firebase.js';
 import { doc, setDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+import EmailTagInput from '../components/email-input.js';
 
 const form = document.getElementById('event-form');
 const storage = getStorage();
+let emailInput;
+
+// Initialize email input component
+document.addEventListener('DOMContentLoaded', () => {
+  const emailInputContainer = document.getElementById('email-input-container');
+  const emailsJsonInput = form.emailsJson;
+  
+  emailInput = new EmailTagInput(emailInputContainer, {
+    onChange: (emails) => {
+      emailsJsonInput.value = JSON.stringify(emails);
+    }
+  });
+});
 
 const processCSV = (file) => {
   return new Promise((resolve, reject) => {
@@ -38,20 +52,6 @@ const processCSV = (file) => {
   });
 };
 
-const processManualEmails = (text) => {
-  const emails = [];
-  const lines = text.split('\n');
-  
-  lines.forEach(line => {
-    const email = line.trim();
-    if (email && validateEmail(email)) {
-      emails.push(email);
-    }
-  });
-  
-  return emails;
-};
-
 const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
@@ -74,6 +74,19 @@ const createDateTimeFromInputs = (dateInput, timeInput) => {
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
+
+// Handle CSV file change to automatically add emails to the tag input
+form.csv.addEventListener('change', async (e) => {
+  try {
+    const file = e.target.files[0];
+    if (file) {
+      const emails = await processCSV(file);
+      emailInput.addEmails(emails);
+    }
+  } catch (error) {
+    alert(error.message || 'Det uppstod ett fel vid bearbetning av CSV-filen');
+  }
+});
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -110,26 +123,24 @@ form.addEventListener('submit', async (e) => {
     const firestoreEventDate = Timestamp.fromDate(eventDateTime);
     const firestoreDeadline = Timestamp.fromDate(responseDateTime);
 
-    // Process emails from CSV and manual entry
-    let emails = [];
+    // Get emails from our tag input component
+    let emails = emailInput.getEmails();
     
-    // Process CSV if provided
+    // Process CSV if provided (just in case any weren't added to the tag input)
     const csvFile = form.csv.files[0];
     if (csvFile) {
-      const csvEmails = await processCSV(csvFile);
-      emails = emails.concat(csvEmails);
-    }
-    
-    // Process manual emails if provided
-    const manualEmailsText = form.manualEmails.value.trim();
-    if (manualEmailsText) {
-      const manualEmails = processManualEmails(manualEmailsText);
-      emails = emails.concat(manualEmails);
+      try {
+        const csvEmails = await processCSV(csvFile);
+        emails = [...emails, ...csvEmails];
+      } catch (error) {
+        console.warn('CSV processing error:', error);
+        // Continue with emails we already have
+      }
     }
     
     // Ensure we have at least one email
     if (emails.length === 0) {
-      throw new Error('Ange minst en giltig e-postadress via CSV eller manuell inmatning');
+      throw new Error('Ange minst en giltig e-postadress');
     }
     
     // Remove duplicates

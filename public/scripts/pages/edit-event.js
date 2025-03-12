@@ -1,26 +1,28 @@
 import { auth, db } from '../firebase.js';
 import { doc, getDoc, updateDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import EmailTagInput from '../components/email-input.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const eventId = urlParams.get('eventId');
 
 const form = document.getElementById('edit-event-form');
 const invitationsTableBody = document.getElementById('invitations-table-body');
+let emailInput;
 
-// Process manual emails from textarea
-const processManualEmails = (text) => {
-  const emails = [];
-  const lines = text.split('\n');
+// Initialize email input component
+document.addEventListener('DOMContentLoaded', () => {
+  const emailInputContainer = document.getElementById('email-input-container');
+  const emailsJsonInput = form.emailsJson;
   
-  lines.forEach(line => {
-    const email = line.trim();
-    if (email && validateEmail(email)) {
-      emails.push(email);
+  emailInput = new EmailTagInput(emailInputContainer, {
+    onChange: (emails) => {
+      emailsJsonInput.value = JSON.stringify(emails);
     }
   });
   
-  return emails;
-};
+  // Load the event data after initializing the component
+  loadEvent();
+});
 
 // CSV processing function
 const processCSV = (file) => {
@@ -108,6 +110,19 @@ const displayInvitations = (invitations) => {
   invitationsTableBody.innerHTML = rows;
 };
 
+// Handle CSV file change to automatically add emails to the tag input
+form.csv?.addEventListener('change', async (e) => {
+  try {
+    const file = e.target.files[0];
+    if (file) {
+      const emails = await processCSV(file);
+      emailInput.addEmails(emails);
+    }
+  } catch (error) {
+    alert(error.message || 'Det uppstod ett fel vid bearbetning av CSV-filen');
+  }
+});
+
 const loadEvent = async () => {
   if (!eventId) {
     alert("Ingen händelse-ID angiven!");
@@ -163,8 +178,6 @@ const loadEvent = async () => {
     alert("Evenemanget hittades inte!");
   }
 };
-
-document.addEventListener('DOMContentLoaded', loadEvent);
 
 // Helper function to create date objects from form inputs
 const createDateTimeFromInputs = (dateInput, timeInput) => {
@@ -223,21 +236,19 @@ form.addEventListener('submit', async (e) => {
       responseDeadline: Timestamp.fromDate(responseDateTime)
     };
 
-    // Gather new emails
-    let newEmails = [];
+    // Get new emails from our tag input component
+    let newEmails = emailInput.getEmails();
     
-    // Process CSV if provided
+    // Process CSV if provided (in case any weren't added to the tag input)
     const csvFile = form.csv.files[0];
     if (csvFile) {
-      const csvEmails = await processCSV(csvFile);
-      newEmails = newEmails.concat(csvEmails);
-    }
-    
-    // Process manual emails if provided
-    const manualEmailsText = form.manualEmails.value.trim();
-    if (manualEmailsText) {
-      const manualEmails = processManualEmails(manualEmailsText);
-      newEmails = newEmails.concat(manualEmails);
+      try {
+        const csvEmails = await processCSV(csvFile);
+        newEmails = [...newEmails, ...csvEmails];
+      } catch (error) {
+        console.warn('CSV processing error:', error);
+        // Continue with emails we already have
+      }
     }
     
     // If we have new emails, filter out duplicates and create new invitations

@@ -37,9 +37,9 @@
     </div>
 
     <div>
-      <label>Eller lägg till e-postadresser manuellt:</label>
-      <textarea name="manualEmails" placeholder="Ange en e-postadress per rad"></textarea>
-      <small>En e-postadress per rad</small>
+      <label>Eller lägg till nya e-postadresser:</label>
+      <div id="email-input-container"></div>
+      <input type="hidden" name="emailsJson" value="[]">
     </div>
 
     <div>
@@ -71,6 +71,7 @@
     </table>
   </div>
 
+  <script type="module" src="./scripts/components/email-input.js"></script>
   <script type="module" src="./scripts/pages/edit-event.js"></script>
 </body>
 </html>

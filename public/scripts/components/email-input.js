@@ -1,0 +1,153 @@
+// email-input.js
+export default class EmailTagInput {
+    constructor(containerElement, options = {}) {
+      this.container = containerElement;
+      this.emails = options.initialEmails || [];
+      this.onChange = options.onChange || (() => {});
+      
+      this.render();
+      this.setupEventListeners();
+    }
+    
+    render() {
+      // Create container with minimal styling just for functionality
+      this.container.innerHTML = `
+        <div class="email-tag-input-container">
+          <input 
+            type="email" 
+            placeholder="Ange e-postadress och tryck Enter" 
+            class="email-input"
+          />
+          <div class="email-tags"></div>
+          <div class="invalid-feedback" style="display: none; color: red;"></div>
+        </div>
+      `;
+      
+      this.inputElement = this.container.querySelector('.email-input');
+      this.tagsContainer = this.container.querySelector('.email-tags');
+      this.feedbackElement = this.container.querySelector('.invalid-feedback');
+      
+      // Render initial emails if any
+      this.renderTags();
+    }
+    
+    setupEventListeners() {
+      // Handle Enter key and paste events
+      this.inputElement.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.addEmail();
+        }
+      });
+      
+      this.inputElement.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pastedText = e.clipboardData.getData('text');
+        
+        if (pastedText.includes(',') || pastedText.includes(';') || pastedText.includes('\n')) {
+          // Handle multiple emails pasted at once
+          const emails = pastedText.split(/[,;\n]/)
+            .map(email => email.trim())
+            .filter(email => email);
+          
+          emails.forEach(email => this.addEmailIfValid(email));
+        } else {
+          // Single email pasted
+          this.addEmailIfValid(pastedText.trim());
+        }
+      });
+      
+      // Handle blur event to add the current email
+      this.inputElement.addEventListener('blur', () => {
+        if (this.inputElement.value.trim()) {
+          this.addEmail();
+        }
+      });
+    }
+    
+    renderTags() {
+      this.tagsContainer.innerHTML = '';
+      
+      this.emails.forEach((email, index) => {
+        const tag = document.createElement('span');
+        tag.className = 'email-tag';
+        tag.style.display = 'inline-block';
+        tag.style.margin = '2px';
+        tag.style.padding = '2px 4px';
+        tag.style.border = '1px solid #ccc';
+        tag.style.borderRadius = '3px';
+        tag.style.background = '#f5f5f5';
+        
+        tag.innerHTML = `
+          ${email}
+          <button type="button" class="remove-tag" data-index="${index}" style="border: none; background: none; cursor: pointer; font-weight: bold; margin-left: 4px;">×</button>
+        `;
+        
+        tag.querySelector('.remove-tag').addEventListener('click', () => {
+          this.removeEmail(index);
+        });
+        
+        this.tagsContainer.appendChild(tag);
+      });
+    }
+    
+    addEmail() {
+      const email = this.inputElement.value.trim();
+      if (this.addEmailIfValid(email)) {
+        this.inputElement.value = '';
+      }
+    }
+    
+    addEmailIfValid(email) {
+      if (!email) return false;
+      
+      if (this.validateEmail(email)) {
+        if (!this.emails.includes(email)) {
+          this.emails.push(email);
+          this.renderTags();
+          this.onChange(this.emails);
+          this.feedbackElement.style.display = 'none';
+          return true;
+        } else {
+          this.showError(`${email} har redan lagts till`);
+          return false;
+        }
+      } else {
+        this.showError(`${email} är inte en giltig e-postadress`);
+        return false;
+      }
+    }
+    
+    removeEmail(index) {
+      this.emails.splice(index, 1);
+      this.renderTags();
+      this.onChange(this.emails);
+    }
+    
+    validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    showError(message) {
+      this.feedbackElement.textContent = message;
+      this.feedbackElement.style.display = 'block';
+      setTimeout(() => {
+        this.feedbackElement.style.display = 'none';
+      }, 3000);
+    }
+    
+    // Public methods
+    getEmails() {
+      return [...this.emails];
+    }
+    
+    addEmails(emailsArray) {
+      emailsArray.forEach(email => this.addEmailIfValid(email));
+    }
+    
+    clear() {
+      this.emails = [];
+      this.renderTags();
+      this.onChange(this.emails);
+    }
+  }
