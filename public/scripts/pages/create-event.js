@@ -7,7 +7,6 @@ const form = document.getElementById('event-form');
 const storage = getStorage();
 let emailInput;
 
-// Initialize email input component
 document.addEventListener('DOMContentLoaded', () => {
   const emailInputContainer = document.getElementById('email-input-container');
   const emailsJsonInput = form.emailsJson;
@@ -66,16 +65,13 @@ const generateInvitations = (emails, deadline) => {
 };
 
 const createDateTimeFromInputs = (dateInput, timeInput) => {
-  // Combine date and time inputs into a single Date object
   const [year, month, day] = dateInput.split('-').map(num => parseInt(num, 10));
   const [hours, minutes] = timeInput.split(':').map(num => parseInt(num, 10));
   
-  // Create date in local timezone
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
 
-// Handle CSV file change to automatically add emails to the tag input
 form.csv.addEventListener('change', async (e) => {
   try {
     const file = e.target.files[0];
@@ -97,7 +93,6 @@ form.addEventListener('submit', async (e) => {
 
     const today = new Date();
     
-    // Create date objects using the new combined date+time inputs
     const eventDateTime = createDateTimeFromInputs(
       form.eventDate.value, 
       form.eventTime.value
@@ -123,10 +118,8 @@ form.addEventListener('submit', async (e) => {
     const firestoreEventDate = Timestamp.fromDate(eventDateTime);
     const firestoreDeadline = Timestamp.fromDate(responseDateTime);
 
-    // Get emails from our tag input component
     let emails = emailInput.getEmails();
     
-    // Process CSV if provided (just in case any weren't added to the tag input)
     const csvFile = form.csv.files[0];
     if (csvFile) {
       try {
@@ -134,16 +127,13 @@ form.addEventListener('submit', async (e) => {
         emails = [...emails, ...csvEmails];
       } catch (error) {
         console.warn('CSV processing error:', error);
-        // Continue with emails we already have
       }
     }
     
-    // Ensure we have at least one email
     if (emails.length === 0) {
       throw new Error('Ange minst en giltig e-postadress');
     }
     
-    // Remove duplicates
     emails = [...new Set(emails)];
     
     const eventId = crypto.randomUUID();
@@ -159,7 +149,6 @@ form.addEventListener('submit', async (e) => {
       invitations
     };
 
-    // Only upload CSV if it was provided
     if (csvFile) {
       await Promise.all([
         setDoc(doc(db, 'events', eventId), eventData),
@@ -169,7 +158,6 @@ form.addEventListener('submit', async (e) => {
       await setDoc(doc(db, 'events', eventId), eventData);
     }
 
-    // Format the confirmation with both date and time
     const options = { 
       dateStyle: 'medium', 
       timeStyle: 'short'

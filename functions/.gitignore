@@ -1,2 +1,15 @@
 node_modules/
-*.local
+npm-debug.log*
+
+.env
+.env.local
+.runtimeconfig.json
+
+coverage/
+.nyc_output/
+
+logs
+*.log
+firebase-debug.log
+
+serviceAccountKey.json

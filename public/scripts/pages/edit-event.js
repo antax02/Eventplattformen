@@ -9,7 +9,6 @@ const form = document.getElementById('edit-event-form');
 const invitationsTableBody = document.getElementById('invitations-table-body');
 let emailInput;
 
-// Initialize email input component
 document.addEventListener('DOMContentLoaded', () => {
   const emailInputContainer = document.getElementById('email-input-container');
   const emailsJsonInput = form.emailsJson;
@@ -20,11 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   
-  // Load the event data after initializing the component
   loadEvent();
 });
 
-// CSV processing function
 const processCSV = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -58,12 +55,10 @@ const processCSV = (file) => {
   });
 };
 
-// Validate email format
 const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-// Generate new invitation objects
 const generateInvitations = (emails, deadline) => {
   return emails.map(email => ({
     email,
@@ -85,7 +80,6 @@ const formatDateTime = (timestamp) => {
   return date.toLocaleString('sv-SE', options);
 };
 
-// Function to display the invitations
 const displayInvitations = (invitations) => {
   if (!invitations || invitations.length === 0) {
     invitationsTableBody.innerHTML = '<tr><td colspan="4">Inga inbjudningar hittades</td></tr>';
@@ -110,7 +104,6 @@ const displayInvitations = (invitations) => {
   invitationsTableBody.innerHTML = rows;
 };
 
-// Handle CSV file change to automatically add emails to the tag input
 form.csv?.addEventListener('change', async (e) => {
   try {
     const file = e.target.files[0];
@@ -138,14 +131,11 @@ const loadEvent = async () => {
     form.title.value = eventData.title;
     form.description.value = eventData.description || '';
 
-    // Split date and time from Firestore timestamps
     const formatDateInput = (timestamp) => {
       if (!timestamp || !timestamp.seconds) return "";
       
-      // Create date in local timezone
       const date = new Date(timestamp.seconds * 1000);
       
-      // Format date as YYYY-MM-DD for the date input
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
@@ -156,10 +146,8 @@ const loadEvent = async () => {
     const formatTimeInput = (timestamp) => {
       if (!timestamp || !timestamp.seconds) return "";
       
-      // Create date in local timezone
       const date = new Date(timestamp.seconds * 1000);
       
-      // Format time as HH:MM for the time input
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
       
@@ -171,7 +159,6 @@ const loadEvent = async () => {
     form.responseDeadline.value = formatDateInput(eventData.responseDeadline);
     form.responseTime.value = formatTimeInput(eventData.responseDeadline);
 
-    // Display invitations
     displayInvitations(eventData.invitations);
 
   } else {
@@ -179,13 +166,10 @@ const loadEvent = async () => {
   }
 };
 
-// Helper function to create date objects from form inputs
 const createDateTimeFromInputs = (dateInput, timeInput) => {
-  // Combine date and time inputs into a single Date object
   const [year, month, day] = dateInput.split('-').map(num => parseInt(num, 10));
   const [hours, minutes] = timeInput.split(':').map(num => parseInt(num, 10));
   
-  // Create date in local timezone
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
@@ -203,7 +187,6 @@ form.addEventListener('submit', async (e) => {
     
     const eventData = eventSnap.data();
     
-    // Create date objects using the combined date+time inputs
     const eventDateTime = createDateTimeFromInputs(
       form.eventDate.value, 
       form.eventTime.value
@@ -214,7 +197,6 @@ form.addEventListener('submit', async (e) => {
       form.responseTime.value
     );
     
-    // Validate dates
     const today = new Date();
     
     if (eventDateTime < today) {
@@ -236,10 +218,8 @@ form.addEventListener('submit', async (e) => {
       responseDeadline: Timestamp.fromDate(responseDateTime)
     };
 
-    // Get new emails from our tag input component
     let newEmails = emailInput.getEmails();
     
-    // Process CSV if provided (in case any weren't added to the tag input)
     const csvFile = form.csv.files[0];
     if (csvFile) {
       try {
@@ -247,32 +227,24 @@ form.addEventListener('submit', async (e) => {
         newEmails = [...newEmails, ...csvEmails];
       } catch (error) {
         console.warn('CSV processing error:', error);
-        // Continue with emails we already have
       }
     }
     
-    // If we have new emails, filter out duplicates and create new invitations
     if (newEmails.length > 0) {
-      // Get current email addresses to avoid duplicates
       const currentEmails = eventData.invitations.map(inv => inv.email);
       
-      // Filter out emails that are already invited
       const uniqueNewEmails = newEmails.filter(email => !currentEmails.includes(email));
       
-      // If we have unique new emails, add them to invitations
       if (uniqueNewEmails.length > 0) {
         const newInvitations = generateInvitations(uniqueNewEmails, updatedData.responseDeadline);
         updatedData.invitations = [...eventData.invitations, ...newInvitations];
       } else {
-        // No new emails to add
         updatedData.invitations = eventData.invitations;
       }
     } else {
-      // No new emails provided, keep existing invitations
       updatedData.invitations = eventData.invitations;
     }
 
-    // Add resendToAll flag if checkbox is checked
     if (form.resend && form.resend.checked) {
       updatedData.resendToAll = true;
     }

@@ -1,4 +1,3 @@
-// email-input.js
 export default class EmailTagInput {
     constructor(containerElement, options = {}) {
       this.container = containerElement;
@@ -10,7 +9,6 @@ export default class EmailTagInput {
     }
     
     render() {
-      // Create container with minimal styling just for functionality
       this.container.innerHTML = `
         <div class="email-tag-input-container">
           <input 
@@ -27,12 +25,10 @@ export default class EmailTagInput {
       this.tagsContainer = this.container.querySelector('.email-tags');
       this.feedbackElement = this.container.querySelector('.invalid-feedback');
       
-      // Render initial emails if any
       this.renderTags();
     }
     
     setupEventListeners() {
-      // Handle Enter key and paste events
       this.inputElement.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
@@ -45,19 +41,16 @@ export default class EmailTagInput {
         const pastedText = e.clipboardData.getData('text');
         
         if (pastedText.includes(',') || pastedText.includes(';') || pastedText.includes('\n')) {
-          // Handle multiple emails pasted at once
           const emails = pastedText.split(/[,;\n]/)
             .map(email => email.trim())
             .filter(email => email);
           
           emails.forEach(email => this.addEmailIfValid(email));
         } else {
-          // Single email pasted
           this.addEmailIfValid(pastedText.trim());
         }
       });
       
-      // Handle blur event to add the current email
       this.inputElement.addEventListener('blur', () => {
         if (this.inputElement.value.trim()) {
           this.addEmail();
@@ -136,7 +129,6 @@ export default class EmailTagInput {
       }, 3000);
     }
     
-    // Public methods
     getEmails() {
       return [...this.emails];
     }
