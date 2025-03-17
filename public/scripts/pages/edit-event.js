@@ -1,6 +1,7 @@
 import { auth, db } from '../firebase.js';
 import { doc, getDoc, updateDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import EmailTagInput from '../components/email-input.js';
+import CustomFieldsInput from '../components/custom-fields-input.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const eventId = urlParams.get('eventId');
@@ -8,9 +9,11 @@ const eventId = urlParams.get('eventId');
 const form = document.getElementById('edit-event-form');
 const invitationsTableBody = document.getElementById('invitations-table-body');
 let emailInput;
+let customFieldsInput;
 let currentInvitations = [];
 let showingAllInvitations = false;
 const maxDisplayedInvitations = 10;
+let currentCustomFields = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   const emailInputContainer = document.getElementById('email-input-container');
@@ -19,6 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
   emailInput = new EmailTagInput(emailInputContainer, {
     onChange: (emails) => {
       emailsJsonInput.value = JSON.stringify(emails);
+    }
+  });
+
+  const customFieldsContainer = document.getElementById('custom-fields-container');
+  customFieldsInput = new CustomFieldsInput(customFieldsContainer, {
+    onChange: (fields) => {
+      currentCustomFields = fields;
     }
   });
 
@@ -114,6 +124,18 @@ const displayInvitations = (invitations) => {
       }
     }
 
+    // Generate additional field values display
+    let customFieldsDisplay = '-';
+    if (inv.customFieldValues && Object.keys(inv.customFieldValues).length > 0) {
+      const valuesList = Object.entries(inv.customFieldValues).map(([key, value]) => {
+        // Try to find the field label
+        const field = currentCustomFields.find(f => f.id === key);
+        const label = field ? field.label : key;
+        return `${label}: ${value}`;
+      });
+      customFieldsDisplay = valuesList.join(', ');
+    }
+
     return `
       <tr>
         <td>${inv.email}</td>
@@ -121,6 +143,7 @@ const displayInvitations = (invitations) => {
         <td style="${attendingStyle}">${attendingText}</td>
         <td>${inv.name || '-'}</td>
         <td>${inv.phone || '-'}</td>
+        <td>${customFieldsDisplay}</td>
       </tr>
     `;
   }).join('');
@@ -169,6 +192,12 @@ const loadEvent = async () => {
   if (eventSnap.exists()) {
     const eventData = eventSnap.data();
     currentInvitations = eventData.invitations || [];
+    currentCustomFields = eventData.customFields || [
+      { id: 'field_name', label: 'Namn', type: 'text', required: true }
+    ];
+
+    // Set the custom fields input
+    customFieldsInput.setFields(currentCustomFields);
 
     form.title.value = eventData.title;
     form.description.value = eventData.description || '';
@@ -257,7 +286,8 @@ form.addEventListener('submit', async (e) => {
       title: form.title.value,
       description: form.description.value,
       eventDate: Timestamp.fromDate(eventDateTime),
-      responseDeadline: Timestamp.fromDate(responseDateTime)
+      responseDeadline: Timestamp.fromDate(responseDateTime),
+      customFields: currentCustomFields
     };
 
     let newEmails = emailInput.getEmails();

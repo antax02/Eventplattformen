@@ -2,19 +2,28 @@ import { auth, db } from '../firebase.js';
 import { doc, setDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
 import EmailTagInput from '../components/email-input.js';
+import CustomFieldsInput from '../components/custom-fields-input.js';
 
 const form = document.getElementById('event-form');
 const storage = getStorage();
 let emailInput;
+let customFieldsInput;
 
 document.addEventListener('DOMContentLoaded', () => {
   const emailInputContainer = document.getElementById('email-input-container');
   const emailsJsonInput = form.emailsJson;
-  
+
   emailInput = new EmailTagInput(emailInputContainer, {
     onChange: (emails) => {
       emailsJsonInput.value = JSON.stringify(emails);
     }
+  });
+
+  const customFieldsContainer = document.getElementById('custom-fields-container');
+  customFieldsInput = new CustomFieldsInput(customFieldsContainer, {
+    initialFields: [
+      { id: 'field_name', label: 'Namn', type: 'text', required: true }
+    ]
   });
 });
 
@@ -24,25 +33,25 @@ const processCSV = (file) => {
     reader.onload = (e) => {
       const emails = [];
       const rows = e.target.result.split('\n');
-      
+
       const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
       if (!headers.includes('email')) {
         reject('CSV-filen måste ha en "email" kolumn');
         return;
       }
-      
+
       const emailIndex = headers.indexOf('email');
-      
+
       rows.forEach((row, index) => {
         if (index === 0) return;
         const columns = row.split(',');
         const email = columns[emailIndex]?.trim();
-        
+
         if (email && validateEmail(email)) {
           emails.push(email);
         }
       });
-      
+
       if (emails.length === 0) reject('Inga giltiga e-postadresser hittades');
       else resolve(emails);
     };
@@ -67,7 +76,7 @@ const generateInvitations = (emails, deadline) => {
 const createDateTimeFromInputs = (dateInput, timeInput) => {
   const [year, month, day] = dateInput.split('-').map(num => parseInt(num, 10));
   const [hours, minutes] = timeInput.split(':').map(num => parseInt(num, 10));
-  
+
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
@@ -86,20 +95,20 @@ form.csv.addEventListener('change', async (e) => {
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   try {
     const user = auth.currentUser;
     if (!user) throw new Error('Du måste vara inloggad');
 
     const today = new Date();
-    
+
     const eventDateTime = createDateTimeFromInputs(
-      form.eventDate.value, 
+      form.eventDate.value,
       form.eventTime.value
     );
-    
+
     const responseDateTime = createDateTimeFromInputs(
-      form.responseDeadline.value, 
+      form.responseDeadline.value,
       form.responseTime.value
     );
 
@@ -119,7 +128,7 @@ form.addEventListener('submit', async (e) => {
     const firestoreDeadline = Timestamp.fromDate(responseDateTime);
 
     let emails = emailInput.getEmails();
-    
+
     const csvFile = form.csv.files[0];
     if (csvFile) {
       try {
@@ -129,15 +138,25 @@ form.addEventListener('submit', async (e) => {
         console.warn('CSV processing error:', error);
       }
     }
-    
+
     if (emails.length === 0) {
       throw new Error('Ange minst en giltig e-postadress');
     }
-    
+
     emails = [...new Set(emails)];
-    
+
     const eventId = crypto.randomUUID();
     const invitations = generateInvitations(emails, firestoreDeadline);
+
+    // Get custom fields
+    const customFields = customFieldsInput.getFields();
+
+    if (customFields.length === 0) {
+      // Add default fields if none were specified
+      customFields.push(
+        { id: 'field_name', label: 'Namn', type: 'text', required: true }
+      );
+    }
 
     const eventData = {
       title: form.title.value,
@@ -146,7 +165,8 @@ form.addEventListener('submit', async (e) => {
       description: form.description.value,
       owner: user.uid,
       createdAt: serverTimestamp(),
-      invitations
+      invitations,
+      customFields
     };
 
     if (csvFile) {
@@ -158,11 +178,11 @@ form.addEventListener('submit', async (e) => {
       await setDoc(doc(db, 'events', eventId), eventData);
     }
 
-    const options = { 
-      dateStyle: 'medium', 
+    const options = {
+      dateStyle: 'medium',
       timeStyle: 'short'
     };
-    
+
     alert(`Evenemang skapat med ${emails.length} inbjudna!\nSista anmälningsdag: ${responseDateTime.toLocaleString('sv-SE', options)}`);
     window.location.href = './dashboard.html';
 

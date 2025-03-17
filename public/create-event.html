@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Skapa evenemang</h1>
-    
+
     <form id="event-form">
         <div>
             <label>Titel:</label>
@@ -23,12 +23,12 @@
             <input type="date" name="responseDeadline" required>
             <input type="time" name="responseTime" required>
         </div>
-        
+
         <div>
             <label>Beskrivning:</label>
             <textarea name="description"></textarea>
         </div>
-        
+
         <div>
             <label>Lägg till via CSV-fil:</label>
             <input type="file" name="csv" accept=".csv">
@@ -40,13 +40,20 @@
             <div id="email-input-container"></div>
             <input type="hidden" name="emailsJson" value="[]">
         </div>
-        
+
+        <div>
+            <h3>Anpassade fält för anmälan</h3>
+            <p>Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
+            <div id="custom-fields-container"></div>
+        </div>
+
         <button type="submit">
             Skapa evenemang
         </button>
     </form>
 
     <script type="module" src="./scripts/components/email-input.js"></script>
+    <script type="module" src="./scripts/components/custom-fields-input.js"></script>
     <script type="module" src="./scripts/pages/create-event.js"></script>
 </body>
 </html>
