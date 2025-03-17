@@ -18,7 +18,7 @@
       <input type="date" name="eventDate" required>
       <input type="time" name="eventTime" required>
     </div>
-  
+
     <div>
         <label>Sista svarsdatum:</label>
         <input type="date" name="responseDeadline" required>
@@ -59,16 +59,20 @@
         <tr>
           <th>E-post</th>
           <th>Status</th>
+          <th>Deltar</th>
           <th>Namn</th>
           <th>Telefon</th>
         </tr>
       </thead>
       <tbody id="invitations-table-body">
         <tr>
-          <td colspan="4">Laddar deltagare...</td>
+          <td colspan="5">Laddar deltagare...</td>
         </tr>
       </tbody>
     </table>
+    <div id="show-more-invitations" style="display: none;">
+      <button id="toggle-invitations-btn">Visa fler...</button>
+    </div>
   </div>
 
   <script type="module" src="./scripts/components/email-input.js"></script>

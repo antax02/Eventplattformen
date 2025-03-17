@@ -6,13 +6,13 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 const formatDateTime = (timestamp) => {
   if (!timestamp || !timestamp.seconds) return "N/A";
-  
+
   const date = new Date(timestamp.seconds * 1000);
-  const options = { 
+  const options = {
     dateStyle: 'medium',
     timeStyle: 'short'
   };
-  
+
   return date.toLocaleString('sv-SE', options);
 };
 
@@ -20,8 +20,10 @@ const createEventCard = (event) => {
   // Calculate response statistics
   const totalInvitations = event.invitations.length;
   const responded = event.invitations.filter(inv => inv.responded).length;
+  const attending = event.invitations.filter(inv => inv.responded && inv.attending === true).length;
+  const notAttending = event.invitations.filter(inv => inv.responded && inv.attending === false).length;
   const responseRate = totalInvitations > 0 ? Math.round((responded / totalInvitations) * 100) : 0;
-  
+
   return `
     <div class="event-card">
       <h3>${event.title}</h3>
@@ -29,6 +31,7 @@ const createEventCard = (event) => {
       <p>Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
       <p>Inbjudna: ${totalInvitations} personer</p>
       <p>Svar: ${responded} av ${totalInvitations} (${responseRate}%)</p>
+      <p>Deltar: ${attending}, Deltar inte: ${notAttending}</p>
       <a href="./edit-event.html?eventId=${event.id}">
         <button>Redigera</button>
       </a>

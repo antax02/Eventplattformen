@@ -8,17 +8,20 @@ const eventId = urlParams.get('eventId');
 const form = document.getElementById('edit-event-form');
 const invitationsTableBody = document.getElementById('invitations-table-body');
 let emailInput;
+let currentInvitations = [];
+let showingAllInvitations = false;
+const maxDisplayedInvitations = 10;
 
 document.addEventListener('DOMContentLoaded', () => {
   const emailInputContainer = document.getElementById('email-input-container');
   const emailsJsonInput = form.emailsJson;
-  
+
   emailInput = new EmailTagInput(emailInputContainer, {
     onChange: (emails) => {
       emailsJsonInput.value = JSON.stringify(emails);
     }
   });
-  
+
   loadEvent();
 });
 
@@ -28,25 +31,25 @@ const processCSV = (file) => {
     reader.onload = (e) => {
       const emails = [];
       const rows = e.target.result.split('\n');
-      
+
       const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
       if (!headers.includes('email')) {
         reject('CSV-filen måste ha en "email" kolumn');
         return;
       }
-      
+
       const emailIndex = headers.indexOf('email');
-      
+
       rows.forEach((row, index) => {
         if (index === 0) return;
         const columns = row.split(',');
         const email = columns[emailIndex]?.trim();
-        
+
         if (email && validateEmail(email)) {
           emails.push(email);
         }
       });
-      
+
       if (emails.length === 0) reject('Inga giltiga e-postadresser hittades');
       else resolve(emails);
     };
@@ -70,31 +73,52 @@ const generateInvitations = (emails, deadline) => {
 
 const formatDateTime = (timestamp) => {
   if (!timestamp || !timestamp.seconds) return "N/A";
-  
+
   const date = new Date(timestamp.seconds * 1000);
-  const options = { 
+  const options = {
     dateStyle: 'medium',
     timeStyle: 'short'
   };
-  
+
   return date.toLocaleString('sv-SE', options);
 };
 
 const displayInvitations = (invitations) => {
   if (!invitations || invitations.length === 0) {
-    invitationsTableBody.innerHTML = '<tr><td colspan="4">Inga inbjudningar hittades</td></tr>';
+    invitationsTableBody.innerHTML = '<tr><td colspan="5">Inga inbjudningar hittades</td></tr>';
+    document.getElementById('show-more-invitations').style.display = 'none';
     return;
   }
 
-  const rows = invitations.map(inv => {
+  const invitationsToShow = showingAllInvitations
+    ? invitations
+    : invitations.slice(0, maxDisplayedInvitations);
+
+  const rows = invitationsToShow.map(inv => {
     const respondedText = inv.responded ? 'Svarat' : 'Inte svarat';
     const respondedStyle = inv.responded ? 'color: green;' : 'color: orange;';
     const respondedDate = inv.respondedAt ? ` (${formatDateTime(inv.respondedAt)})` : '';
-    
+
+    let attendingText = '-';
+    let attendingStyle = '';
+
+    if (inv.responded) {
+      if (inv.attending === true) {
+        attendingText = 'Ja';
+        attendingStyle = 'color: green;';
+      } else if (inv.attending === false) {
+        attendingText = 'Nej';
+        attendingStyle = 'color: red;';
+      } else {
+        attendingText = 'Ospecificerat';
+      }
+    }
+
     return `
       <tr>
         <td>${inv.email}</td>
         <td style="${respondedStyle}">${respondedText}${respondedDate}</td>
+        <td style="${attendingStyle}">${attendingText}</td>
         <td>${inv.name || '-'}</td>
         <td>${inv.phone || '-'}</td>
       </tr>
@@ -102,6 +126,23 @@ const displayInvitations = (invitations) => {
   }).join('');
 
   invitationsTableBody.innerHTML = rows;
+
+  const showMoreContainer = document.getElementById('show-more-invitations');
+  const toggleBtn = document.getElementById('toggle-invitations-btn');
+
+  if (invitations.length > maxDisplayedInvitations) {
+    showMoreContainer.style.display = 'block';
+    toggleBtn.textContent = showingAllInvitations
+      ? 'Visa färre'
+      : `Visa alla (${invitations.length})`;
+
+    toggleBtn.onclick = () => {
+      showingAllInvitations = !showingAllInvitations;
+      displayInvitations(invitations);
+    };
+  } else {
+    showMoreContainer.style.display = 'none';
+  }
 };
 
 form.csv?.addEventListener('change', async (e) => {
@@ -127,30 +168,31 @@ const loadEvent = async () => {
 
   if (eventSnap.exists()) {
     const eventData = eventSnap.data();
+    currentInvitations = eventData.invitations || [];
 
     form.title.value = eventData.title;
     form.description.value = eventData.description || '';
 
     const formatDateInput = (timestamp) => {
       if (!timestamp || !timestamp.seconds) return "";
-      
+
       const date = new Date(timestamp.seconds * 1000);
-      
+
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
-      
+
       return `${year}-${month}-${day}`;
     };
-    
+
     const formatTimeInput = (timestamp) => {
       if (!timestamp || !timestamp.seconds) return "";
-      
+
       const date = new Date(timestamp.seconds * 1000);
-      
+
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
-      
+
       return `${hours}:${minutes}`;
     };
 
@@ -159,7 +201,7 @@ const loadEvent = async () => {
     form.responseDeadline.value = formatDateInput(eventData.responseDeadline);
     form.responseTime.value = formatTimeInput(eventData.responseDeadline);
 
-    displayInvitations(eventData.invitations);
+    displayInvitations(currentInvitations);
 
   } else {
     alert("Evenemanget hittades inte!");
@@ -169,7 +211,7 @@ const loadEvent = async () => {
 const createDateTimeFromInputs = (dateInput, timeInput) => {
   const [year, month, day] = dateInput.split('-').map(num => parseInt(num, 10));
   const [hours, minutes] = timeInput.split(':').map(num => parseInt(num, 10));
-  
+
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
@@ -180,25 +222,25 @@ form.addEventListener('submit', async (e) => {
   try {
     const eventRef = doc(db, "events", eventId);
     const eventSnap = await getDoc(eventRef);
-    
+
     if (!eventSnap.exists()) {
       throw new Error("Evenemanget hittades inte!");
     }
-    
+
     const eventData = eventSnap.data();
-    
+
     const eventDateTime = createDateTimeFromInputs(
-      form.eventDate.value, 
+      form.eventDate.value,
       form.eventTime.value
     );
-    
+
     const responseDateTime = createDateTimeFromInputs(
-      form.responseDeadline.value, 
+      form.responseDeadline.value,
       form.responseTime.value
     );
-    
+
     const today = new Date();
-    
+
     if (eventDateTime < today) {
       throw new Error('Evenemangsdatumet har redan passerat');
     }
@@ -219,7 +261,7 @@ form.addEventListener('submit', async (e) => {
     };
 
     let newEmails = emailInput.getEmails();
-    
+
     const csvFile = form.csv.files[0];
     if (csvFile) {
       try {
@@ -229,12 +271,12 @@ form.addEventListener('submit', async (e) => {
         console.warn('CSV processing error:', error);
       }
     }
-    
+
     if (newEmails.length > 0) {
       const currentEmails = eventData.invitations.map(inv => inv.email);
-      
+
       const uniqueNewEmails = newEmails.filter(email => !currentEmails.includes(email));
-      
+
       if (uniqueNewEmails.length > 0) {
         const newInvitations = generateInvitations(uniqueNewEmails, updatedData.responseDeadline);
         updatedData.invitations = [...eventData.invitations, ...newInvitations];

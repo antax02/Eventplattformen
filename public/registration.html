@@ -7,10 +7,22 @@
 <body>
     <form id="registration-form" onsubmit="return false">
         <div>
+            <label>Deltar du? *</label>
+            <div>
+                <label>
+                    <input type="radio" name="attending" value="yes" required> Ja
+                </label>
+                <label>
+                    <input type="radio" name="attending" value="no" required> Nej
+                </label>
+            </div>
+        </div>
+
+        <div>
             <label>Fullständigt namn *</label>
             <input type="text" name="name" required>
         </div>
-        
+
         <div>
             <label>Telefonnummer</label>
             <input type="tel" name="phone">
@@ -20,7 +32,7 @@
             Skicka anmälan
         </button>
     </form>
-    
+
     <a href="./index.html">Tillbaka till startsidan</a>
 
     <script type="module" src="./scripts/pages/registration.js"></script>
