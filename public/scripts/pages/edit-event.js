@@ -124,11 +124,9 @@ const displayInvitations = (invitations) => {
       }
     }
 
-    // Generate additional field values display
     let customFieldsDisplay = '-';
     if (inv.customFieldValues && Object.keys(inv.customFieldValues).length > 0) {
       const valuesList = Object.entries(inv.customFieldValues).map(([key, value]) => {
-        // Try to find the field label
         const field = currentCustomFields.find(f => f.id === key);
         const label = field ? field.label : key;
         return `${label}: ${value}`;
@@ -196,7 +194,6 @@ const loadEvent = async () => {
       { id: 'field_name', label: 'Namn', type: 'text', required: true }
     ];
 
-    // Set the custom fields input
     customFieldsInput.setFields(currentCustomFields);
 
     form.title.value = eventData.title;

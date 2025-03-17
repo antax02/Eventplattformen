@@ -148,11 +148,9 @@ form.addEventListener('submit', async (e) => {
     const eventId = crypto.randomUUID();
     const invitations = generateInvitations(emails, firestoreDeadline);
 
-    // Get custom fields
     const customFields = customFieldsInput.getFields();
 
     if (customFields.length === 0) {
-      // Add default fields if none were specified
       customFields.push(
         { id: 'field_name', label: 'Namn', type: 'text', required: true }
       );

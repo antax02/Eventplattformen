@@ -13,7 +13,6 @@ if (!eventId || !token) {
   window.location.href = './index.html';
 }
 
-// Load the event data and create form fields
 async function loadEventData() {
   try {
     const eventRef = doc(db, 'events', eventId);
@@ -38,7 +37,6 @@ async function loadEventData() {
       throw new Error('Anmälningsperioden har utgått');
     }
 
-    // Generate the custom fields
     generateCustomFields(eventData.customFields || []);
   } catch (error) {
     console.error('Detaljerat fel:', error);
@@ -46,14 +44,11 @@ async function loadEventData() {
   }
 }
 
-// Generate custom form fields based on the event configuration
 function generateCustomFields(fields) {
   if (!fields || fields.length === 0) {
-    // Use default fields if no custom fields defined
     return;
   }
 
-  // If custom fields are defined, hide default fields (they'll be in the custom fields)
   document.getElementById('default-fields').style.display = 'none';
 
   customFieldsContainer.innerHTML = '';
@@ -82,7 +77,6 @@ function generateCustomFields(fields) {
   });
 }
 
-// Process form submission
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -93,7 +87,6 @@ form.addEventListener('submit', async (e) => {
 
     const attending = form.querySelector('input[name="attending"]:checked').value === 'yes';
 
-    // Collect values from custom fields
     const customFieldValues = {};
     if (eventData.customFields && eventData.customFields.length > 0) {
       eventData.customFields.forEach(field => {
@@ -117,7 +110,6 @@ form.addEventListener('submit', async (e) => {
       customFieldValues: customFieldValues
     };
 
-    // For backward compatibility, also set name field
     const nameField = document.querySelector('input[name="name"]');
 
     if (nameField) {
@@ -136,5 +128,4 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// Initialize the page
 document.addEventListener('DOMContentLoaded', loadEventData);

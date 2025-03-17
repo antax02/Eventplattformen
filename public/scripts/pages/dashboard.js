@@ -17,7 +17,6 @@ const formatDateTime = (timestamp) => {
 };
 
 const createEventCard = (event) => {
-  // Calculate response statistics
   const totalInvitations = event.invitations.length;
   const responded = event.invitations.filter(inv => inv.responded).length;
   const attending = event.invitations.filter(inv => inv.responded && inv.attending === true).length;

@@ -66,7 +66,6 @@ export default class CustomFieldsInput {
           <button type="button" class="remove-field" data-index="${index}">Ta bort</button>
         `;
 
-        // Add event listeners for this field
         const typeSelect = fieldElement.querySelector('.field-type');
 
         typeSelect.addEventListener('change', () => {
