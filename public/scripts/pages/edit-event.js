@@ -1,5 +1,5 @@
 import { auth, db } from '../firebase.js';
-import { doc, getDoc, updateDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { doc, getDoc, updateDoc, deleteDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import EmailTagInput from '../components/email-input.js';
 import CustomFieldsInput from '../components/custom-fields-input.js';
 
@@ -31,6 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
       currentCustomFields = fields;
     }
   });
+
+  // Setup delete event button
+  const deleteEventBtn = document.getElementById('delete-event-btn');
+  if (deleteEventBtn) {
+    deleteEventBtn.addEventListener('click', deleteEvent);
+  }
 
   loadEvent();
 });
@@ -240,6 +246,28 @@ const createDateTimeFromInputs = (dateInput, timeInput) => {
 
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
+};
+
+const deleteEvent = async () => {
+  // Show confirmation dialog
+  const confirmed = confirm('Är du säker på att du vill ta bort detta evenemang? Detta kan inte ångras.');
+  
+  if (!confirmed) {
+    return;
+  }
+  
+  try {
+    const eventRef = doc(db, "events", eventId);
+    
+    // Delete the event
+    await deleteDoc(eventRef);
+    
+    alert('Evenemanget har tagits bort');
+    window.location.href = './dashboard.html';
+  } catch (error) {
+    console.error('Fel vid borttagning:', error);
+    alert('Kunde inte ta bort evenemanget: ' + error.message);
+  }
 };
 
 form.addEventListener('submit', async (e) => {
