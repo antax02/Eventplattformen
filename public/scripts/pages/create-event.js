@@ -139,6 +139,10 @@ form.addEventListener('submit', async (e) => {
       }
     }
 
+    if (emails.length === 0) {
+      throw new Error('Ange minst en giltig e-postadress');
+    }
+
     emails = [...new Set(emails)];
 
     const eventId = crypto.randomUUID();
