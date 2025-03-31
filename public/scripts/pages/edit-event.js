@@ -1,5 +1,5 @@
 import { auth, db } from '../firebase.js';
-import { doc, getDoc, updateDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { doc, getDoc, updateDoc, deleteDoc, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import EmailTagInput from '../components/email-input.js';
 import CustomFieldsInput from '../components/custom-fields-input.js';
 
@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
       currentCustomFields = fields;
     }
   });
+  
+  const deleteButton = document.getElementById('delete-event-btn');
+  if (deleteButton) {
+    deleteButton.addEventListener('click', handleDeleteEvent);
+  }
 
   loadEvent();
 });
@@ -241,6 +246,26 @@ const createDateTimeFromInputs = (dateInput, timeInput) => {
   const date = new Date(year, month - 1, day, hours, minutes);
   return date;
 };
+
+async function handleDeleteEvent() {
+  const isConfirmed = window.confirm("Är du säker på att du vill radera detta evenemang?");
+  
+  if (isConfirmed) {
+    const secondConfirmation = window.confirm("Detta kommer att radera evenemanget permanent och alla inbjudningar. Vill du fortsätta?");
+    
+    if (secondConfirmation) {
+      try {
+        const eventRef = doc(db, "events", eventId);
+        await deleteDoc(eventRef);
+        alert("Evenemanget har raderats");
+        window.location.href = './dashboard.html';
+      } catch (error) {
+        console.error("Fel vid radering:", error);
+        alert("Kunde inte radera evenemanget: " + error.message);
+      }
+    }
+  }
+}
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
