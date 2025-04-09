@@ -189,3 +189,7 @@ form.addEventListener('submit', async (e) => {
     alert(error.message || 'Något gick fel');
   }
 });
+
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  window.location.href = './dashboard.html';
+});

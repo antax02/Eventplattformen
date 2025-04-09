@@ -352,3 +352,7 @@ form.addEventListener('submit', async (e) => {
     alert("Kunde inte uppdatera evenemanget: " + error.message);
   }
 });
+
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  window.location.href = './dashboard.html';
+});

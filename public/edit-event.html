@@ -3,41 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>Redigera evenemang</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/pages/edit-event.css">
 </head>
 <body>
   <h1>Redigera evenemang</h1>
 
   <form id="edit-event-form">
     <div>
-      <label>Titel:</label>
+      <label>Titel</label>
       <input type="text" name="title" required>
     </div>
 
     <div>
-      <label>Evenemangsdatum:</label>
+      <label>Evenemangsdatum</label>
       <input type="date" name="eventDate" required>
       <input type="time" name="eventTime" required>
     </div>
 
     <div>
-        <label>Sista svarsdatum:</label>
+        <label>Sista svarsdatum</label>
         <input type="date" name="responseDeadline" required>
         <input type="time" name="responseTime" required>
     </div>
 
     <div>
-      <label>Beskrivning:</label>
+      <label>Beskrivning</label>
       <textarea name="description"></textarea>
     </div>
 
     <div>
-      <label>Lägg till deltagare via CSV:</label>
-      <input type="file" name="csv" accept=".csv">
+      <label>Lägg till deltagare via CSV</label>
+      <input type="file" name="csv" accept=".csv" class=".btn">
       <small>CSV-filen måste ha en kolumn "email"</small>
     </div>
 
     <div>
-      <label>Eller lägg till nya e-postadresser:</label>
+      <label>Eller lägg till nya e-postadresser</label>
       <div id="email-input-container"></div>
       <input type="hidden" name="emailsJson" value="[]">
     </div>
@@ -55,7 +57,8 @@
       </label>
     </div>
 
-    <button type="submit">Uppdatera evenemang</button>
+    <button type="submit" class="btn">Uppdatera evenemang</button>
+    <button type="button" id="cancel-btn" class="btn redbtn">Avbryt</button>
   </form>
 
   <div id="invitations-list">
@@ -81,7 +84,7 @@
     </div>
   </div>
 
-  <button id="delete-event-btn" type="button">Radera evenemang</button>
+  <button id="delete-event-btn" type="button" class="btn redbtn">Radera evenemang</button>
 
   <script type="module" src="./scripts/components/email-input.js"></script>
   <script type="module" src="./scripts/components/custom-fields-input.js"></script>

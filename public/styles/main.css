@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col {
+    flex: 1;
+    padding: 0 15px;
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+}
+
+.btn {
+    display: inline-block;
+    background-color: #e7e7e7; 
+    color: #333;
+    border: 2px solid #ffffff00;
+    border-radius: 4px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    background-color: #f9f9f9;
+    border: 2px solid #e7e7e7;
+    cursor: pointer;
+}
+
+.redbtn {
+    background-color: #ef4444;
+    color: #e5e7eb;
+}
+
+.redbtn:hover {
+    border: 2px solid #ef4444;
+    color: #ef4444;
+}
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+h1 {
+    text-align: center;
+}
