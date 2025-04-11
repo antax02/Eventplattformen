@@ -193,3 +193,31 @@ form.addEventListener('submit', async (e) => {
 document.getElementById('cancel-btn').addEventListener('click', () => {
   window.location.href = './dashboard.html';
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const textInputs = document.querySelectorAll('input[type="text"]');
+  textInputs.forEach(input => input.classList.add('input-field', 'text-input'));
+
+  const emailInputs = document.querySelectorAll('input[type="email"]');
+  emailInputs.forEach(input => input.classList.add('input-field', 'email-input'));
+
+  const dateInputs = document.querySelectorAll('input[type="date"]');
+  dateInputs.forEach(input => input.classList.add('input-field', 'date-input'));
+
+  const timeInputs = document.querySelectorAll('input[type="time"]');
+  timeInputs.forEach(input => input.classList.add('input-field', 'time-input'));
+
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+  fileInputs.forEach(input => input.classList.add('input-field', 'file-input'));
+
+  const textareas = document.querySelectorAll('textarea');
+  textareas.forEach(textarea => textarea.classList.add('input-field', 'textarea-input'));
+
+  const submitButton = document.querySelector('button[type="submit"]');
+  if (submitButton && !submitButton.classList.contains('btn')) {
+    submitButton.classList.add('btn', 'submit-btn');
+  }
+  
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(checkbox => checkbox.classList.add('checkbox-input'));
+});

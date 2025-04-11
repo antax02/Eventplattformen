@@ -38,6 +38,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadEvent();
+  
+  const textInputs = document.querySelectorAll('input[type="text"]');
+  textInputs.forEach(input => input.classList.add('input-field', 'text-input'));
+
+  const emailInputs = document.querySelectorAll('input[type="email"]');
+  emailInputs.forEach(input => input.classList.add('input-field', 'email-input'));
+
+  const dateInputs = document.querySelectorAll('input[type="date"]');
+  dateInputs.forEach(input => input.classList.add('input-field', 'date-input'));
+
+  const timeInputs = document.querySelectorAll('input[type="time"]');
+  timeInputs.forEach(input => input.classList.add('input-field', 'time-input'));
+
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+  fileInputs.forEach(input => input.classList.add('input-field', 'file-input'));
+
+  const textareas = document.querySelectorAll('textarea');
+  textareas.forEach(textarea => textarea.classList.add('input-field', 'textarea-input'));
+
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach(checkbox => checkbox.classList.add('checkbox-input'));
+
+  const toggleBtn = document.getElementById('toggle-invitations-btn');
+  if (toggleBtn) {
+    toggleBtn.classList.add('btn', 'toggle-btn');
+  }
 });
 
 const processCSV = (file) => {
@@ -140,13 +166,13 @@ const displayInvitations = (invitations) => {
     }
 
     return `
-      <tr>
-        <td>${inv.email}</td>
-        <td style="${respondedStyle}">${respondedText}${respondedDate}</td>
-        <td style="${attendingStyle}">${attendingText}</td>
-        <td>${inv.name || '-'}</td>
-        <td>${inv.phone || '-'}</td>
-        <td>${customFieldsDisplay}</td>
+      <tr class="invitation-row">
+        <td class="email-cell">${inv.email}</td>
+        <td class="status-cell" style="${respondedStyle}">${respondedText}${respondedDate}</td>
+        <td class="attending-cell" style="${attendingStyle}">${attendingText}</td>
+        <td class="name-cell">${inv.name || '-'}</td>
+        <td class="phone-cell">${inv.phone || '-'}</td>
+        <td class="custom-fields-cell">${customFieldsDisplay}</td>
       </tr>
     `;
   }).join('');

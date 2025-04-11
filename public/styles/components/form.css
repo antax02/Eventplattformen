@@ -1,0 +1,179 @@
+select.input-field {
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+}
+
+.input-field {
+    border: 1px solid #dddddd;
+}
+
+.text-input {
+    border: 1px solid #dddddd;
+}
+
+.email-input {
+
+}
+
+.date-input {
+
+}
+
+.time-input {
+
+}
+
+.number-input {
+
+}
+
+.tel-input {
+
+}
+
+input::file-selector-button {
+    background-color: #ffffff00;
+    border: 0px solid #ffffff00;
+}
+
+.file-input {
+    background-color: #e7e7e7;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffffff00;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.file-input:hover {
+    background-color: #f9f9f9;
+    border: 2px solid #e7e7e7;
+    cursor: pointer;
+}
+
+.textarea-input {
+
+}
+
+.select-input {
+
+}
+
+.checkbox-input {
+
+}
+
+.checkbox-label {
+
+}
+
+.checkbox-container {
+
+}
+
+.radio-input {
+
+}
+
+
+.btn {
+    display: inline-block;
+    background-color: #e7e7e7; 
+    color: #333;
+    border: 2px solid #ffffff00;
+    border-radius: 4px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    background-color: #f9f9f9;
+    border: 2px solid #e7e7e7;
+    cursor: pointer;
+}
+
+.redbtn {
+    background-color: #ef4444;
+    color: #e5e7eb;
+}
+
+.redbtn:hover {
+    border: 2px solid #ef4444;
+    color: #ef4444;
+}
+
+.remove-field {
+
+}
+
+.btn-small {
+
+}
+
+.submit-btn {
+
+}
+
+.toggle-btn {
+
+}
+
+.add-field-btn {
+
+}
+
+.field-item {
+
+}
+
+.field-row {
+
+}
+
+.field-label {
+
+}
+
+.email-tag-input-container {
+
+}
+
+.email-tags {
+
+}
+
+.email-tag {
+
+}
+
+.email-tags-more {
+
+}
+
+.show-more-btn {
+
+}
+
+.remove-tag {
+
+}
+
+.form-field {
+
+}
+
+.custom-field {
+
+}
+
+.invitation-row {
+
+}
+
+.email-cell, .status-cell, .attending-cell, .name-cell, .phone-cell, .custom-fields-cell {
+
+}

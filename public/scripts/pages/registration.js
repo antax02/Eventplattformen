@@ -38,6 +38,30 @@ async function loadEventData() {
     }
 
     generateCustomFields(eventData.customFields || []);
+    
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    radioButtons.forEach(radio => radio.classList.add('radio-input'));
+
+    document.querySelectorAll('input[type="text"]').forEach(input => 
+      input.classList.add('input-field', 'text-input'));
+    
+    document.querySelectorAll('input[type="email"]').forEach(input => 
+      input.classList.add('input-field', 'email-input'));
+    
+    document.querySelectorAll('input[type="tel"]').forEach(input => 
+      input.classList.add('input-field', 'tel-input'));
+      
+    document.querySelectorAll('input[type="number"]').forEach(input => 
+      input.classList.add('input-field', 'number-input'));
+      
+    document.querySelectorAll('input[type="date"]').forEach(input => 
+      input.classList.add('input-field', 'date-input'));
+    
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.classList.add('btn', 'submit-btn');
+    }
+    
   } catch (error) {
     console.error('Detaljerat fel:', error);
     alert(`Fel: ${error.message}`);
@@ -55,15 +79,18 @@ function generateCustomFields(fields) {
 
   fields.forEach(field => {
     const fieldContainer = document.createElement('div');
+    fieldContainer.className = 'form-field custom-field';
 
     const label = document.createElement('label');
     label.textContent = `${field.label}${field.required ? ' *' : ''}`;
+    label.className = 'field-label';
     fieldContainer.appendChild(label);
 
     let inputElement;
 
     inputElement = document.createElement('input');
     inputElement.type = field.type || 'text';
+    inputElement.className = `input-field ${field.type}-input`;
 
     inputElement.name = field.id;
     inputElement.id = field.id;

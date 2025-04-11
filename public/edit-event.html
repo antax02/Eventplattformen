@@ -1,93 +1,95 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <title>Redigera evenemang</title>
-  <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/pages/edit-event.css">
+    <meta charset="UTF-8">
+    <title>Redigera evenemang</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components/form.css">
 </head>
 <body>
-  <h1>Redigera evenemang</h1>
+    <h1>Redigera evenemang</h1>
 
-  <form id="edit-event-form">
-    <div>
-      <label>Titel</label>
-      <input type="text" name="title" required>
+    <form id="edit-event-form">
+        <div>
+            <label>Titel</label>
+            <input type="text" name="title" required>
+        </div>
+
+        <div>
+            <label>Evenemangsdatum</label>
+            <input type="date" name="eventDate" required>
+            <input type="time" name="eventTime" required>
+        </div>
+
+        <div>
+            <label>Sista svarsdatum</label>
+            <input type="date" name="responseDeadline" required>
+            <input type="time" name="responseTime" required>
+        </div>
+
+        <div>
+            <label>Beskrivning</label>
+            <textarea name="description"></textarea>
+        </div>
+
+        <div class="col">
+            <label>Lägg till deltagare via CSV</label>
+            <input type="file" name="csv" accept=".csv" class="">
+            <small>CSV-filen måste ha en kolumn "email"</small>
+        </div>
+
+        <div>
+            <label>Eller lägg till nya e-postadresser</label>
+            <div id="email-input-container"></div>
+            <input type="hidden" name="emailsJson" value="[]">
+        </div>
+
+        <div>
+            <h3>Anpassade fält för anmälan</h3>
+            <p style="margin-bottom: 10px;">Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
+            <div id="custom-fields-container"></div>
+        </div>
+
+        <div>
+            <label>
+            <input type="checkbox" name="resend">
+            Skicka igen till redan inbjudna
+            </label>
+        </div>
+
+        <div>
+            <button type="submit" class="btn">Uppdatera evenemang</button>
+            <button type="button" id="cancel-btn" class="btn redbtn">Avbryt</button>
+        </div>
+    </form>
+
+    <div id="invitations-list">
+        <h2>Inbjudna deltagare</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>E-post</th>
+                    <th>Status</th>
+                    <th>Deltar</th>
+                    <th>Namn</th>
+                    <th>Ytterligare information</th>
+                </tr>
+            </thead>
+            <tbody id="invitations-table-body">
+                <tr>
+                    <td colspan="6">Laddar deltagare...</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="show-more-invitations" style="display: none;">
+            <button id="toggle-invitations-btn">Visa fler...</button>
+        </div>
     </div>
 
-    <div>
-      <label>Evenemangsdatum</label>
-      <input type="date" name="eventDate" required>
-      <input type="time" name="eventTime" required>
-    </div>
+    <button id="delete-event-btn" type="button" class="btn redbtn">Radera evenemang</button>
 
-    <div>
-        <label>Sista svarsdatum</label>
-        <input type="date" name="responseDeadline" required>
-        <input type="time" name="responseTime" required>
-    </div>
-
-    <div>
-      <label>Beskrivning</label>
-      <textarea name="description"></textarea>
-    </div>
-
-    <div>
-      <label>Lägg till deltagare via CSV</label>
-      <input type="file" name="csv" accept=".csv" class=".btn">
-      <small>CSV-filen måste ha en kolumn "email"</small>
-    </div>
-
-    <div>
-      <label>Eller lägg till nya e-postadresser</label>
-      <div id="email-input-container"></div>
-      <input type="hidden" name="emailsJson" value="[]">
-    </div>
-
-    <div>
-      <h3>Anpassade fält för anmälan</h3>
-      <p>Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
-      <div id="custom-fields-container"></div>
-    </div>
-
-    <div>
-      <label>
-        <input type="checkbox" name="resend">
-        Skicka igen till redan inbjudna
-      </label>
-    </div>
-
-    <button type="submit" class="btn">Uppdatera evenemang</button>
-    <button type="button" id="cancel-btn" class="btn redbtn">Avbryt</button>
-  </form>
-
-  <div id="invitations-list">
-    <h2>Inbjudna deltagare</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>E-post</th>
-          <th>Status</th>
-          <th>Deltar</th>
-          <th>Namn</th>
-          <th>Ytterligare information</th>
-        </tr>
-      </thead>
-      <tbody id="invitations-table-body">
-        <tr>
-          <td colspan="6">Laddar deltagare...</td>
-        </tr>
-      </tbody>
-    </table>
-    <div id="show-more-invitations" style="display: none;">
-      <button id="toggle-invitations-btn">Visa fler...</button>
-    </div>
-  </div>
-
-  <button id="delete-event-btn" type="button" class="btn redbtn">Radera evenemang</button>
-
-  <script type="module" src="./scripts/components/email-input.js"></script>
-  <script type="module" src="./scripts/components/custom-fields-input.js"></script>
-  <script type="module" src="./scripts/pages/edit-event.js"></script>
+    <script type="module" src="./scripts/components/email-input.js"></script>
+    <script type="module" src="./scripts/components/custom-fields-input.js"></script>
+    <script type="module" src="./scripts/pages/edit-event.js"></script>
 </body>
 </html>

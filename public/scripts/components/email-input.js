@@ -16,11 +16,11 @@ export default class EmailTagInput {
         <input
           type="email"
           placeholder="Ange e-postadress och tryck Enter"
-          class="email-input"
+          class="input-field email-input"
         />
         <div class="email-tags"></div>
         <div class="email-tags-more" style="display: none;">
-          <button type="button" class="show-more-btn">Visa fler...</button>
+          <button type="button" class="btn show-more-btn">Visa fler...</button>
         </div>
         <div class="invalid-feedback" style="display: none; color: red;"></div>
       </div>
@@ -89,7 +89,7 @@ export default class EmailTagInput {
 
       tag.innerHTML = `
         ${email}
-        <button type="button" class="remove-tag" data-index="${index}" style="border: none; background: none; cursor: pointer; font-weight: bold; margin-left: 4px;">×</button>
+        <button type="button" class="remove-tag btn-small" data-index="${index}" style="border: none; background: none; cursor: pointer; font-weight: bold; margin-left: 4px;">×</button>
       `;
 
       tag.querySelector('.remove-tag').addEventListener('click', () => {

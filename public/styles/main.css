@@ -28,36 +28,6 @@ body {
     }
 }
 
-.btn {
-    display: inline-block;
-    background-color: #e7e7e7; 
-    color: #333;
-    border: 2px solid #ffffff00;
-    border-radius: 4px;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
-}
-
-.btn:hover {
-    background-color: #f9f9f9;
-    border: 2px solid #e7e7e7;
-    cursor: pointer;
-}
-
-.redbtn {
-    background-color: #ef4444;
-    color: #e5e7eb;
-}
-
-.redbtn:hover {
-    border: 2px solid #ef4444;
-    color: #ef4444;
-}
-
 form {
     max-width: 600px;
     margin: 20px auto;
@@ -84,6 +54,7 @@ select {
 
 textarea {
     min-height: 100px;
+    resize: none;
 }
 
 h1 {
