@@ -63,7 +63,7 @@ export default class CustomFieldsInput {
             Obligatoriskt
           </label>
         </div>
-        <button type="button" class="remove-field btn redbtn" data-index="${index}">Ta bort</button>
+        <button type="button" class="remove-field btn" data-index="${index}">Ta bort</button>
       `;
 
       const typeSelect = fieldElement.querySelector('.field-type');

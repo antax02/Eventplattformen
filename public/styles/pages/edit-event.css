@@ -1,0 +1,72 @@
+body {
+    padding: 10px 15px;
+}
+
+h1 {
+    margin-top: 10px;
+}
+
+#invitations-list {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+#invitations-list h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+#edit-event-form .btn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    flex: 1;
+}
+
+#delete-event-btn {
+    margin-top: 20px;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .button-container {
+        flex-direction: row;
+    }
+    
+    body {
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    #edit-event-form {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    
+    #edit-event-form input[type="text"],
+    #edit-event-form input[type="email"],
+    #edit-event-form input[type="date"],
+    #edit-event-form input[type="time"],
+    #edit-event-form textarea,
+    #edit-event-form select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

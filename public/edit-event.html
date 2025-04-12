@@ -5,6 +5,8 @@
     <title>Redigera evenemang</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components/form.css">
+    <link rel="stylesheet" href="styles/pages/edit-event.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <h1>Redigera evenemang</h1>
@@ -50,17 +52,21 @@
             <div id="custom-fields-container"></div>
         </div>
 
-        <div>
-            <label>
-            <input type="checkbox" name="resend">
-            Skicka igen till redan inbjudna
+        <div class="checkbox-container">
+            <label class="checkbox-label">
+                <input type="checkbox" name="resend" class="checkbox-input">
+                <span>Skicka igen till redan inbjudna</span>
             </label>
         </div>
 
-        <div>
+        <div class="button-container">
             <button type="submit" class="btn">Uppdatera evenemang</button>
             <button type="button" id="cancel-btn" class="btn redbtn">Avbryt</button>
         </div>
+
+
+        <button id="delete-event-btn" type="button" class="btn redbtn">Radera evenemang</button>
+
     </form>
 
     <div id="invitations-list">
@@ -86,7 +92,7 @@
         </div>
     </div>
 
-    <button id="delete-event-btn" type="button" class="btn redbtn">Radera evenemang</button>
+    
 
     <script type="module" src="./scripts/components/email-input.js"></script>
     <script type="module" src="./scripts/components/custom-fields-input.js"></script>
