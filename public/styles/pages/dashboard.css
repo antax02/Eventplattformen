@@ -1,0 +1,77 @@
+/* Dashboard header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.dashboard-header__title {
+    margin-bottom: 0;
+}
+
+/* Event cards grid */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+/* Event card */
+.event-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-card__title {
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+}
+
+.event-card__date,
+.event-card__deadline,
+.event-card__stats {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.event-card__stats {
+    margin-top: 16px;
+}
+
+.event-card__actions {
+    margin-top: 16px;
+    text-align: right;
+}
+
+/* Create new event button */
+.create-event-btn {
+    display: block;
+    margin: 32px auto;
+    text-align: center;
+}
+
+/* Empty state */
+.events-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: #666;
+}
+
+/* For backwards compatibility */
+#events-list {
+    margin-bottom: 32px;
+}
+
+#logoutBtn {
+    margin-bottom: 24px;
+}

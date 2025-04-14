@@ -1,0 +1,86 @@
+/* Event form layout */
+.event-form {
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.event-form__section {
+    margin-bottom: 32px;
+}
+
+.event-form__title {
+    margin-bottom: 24px;
+}
+
+.event-form__datetime {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.event-form__datetime .input--date {
+    flex: 2;
+}
+
+.event-form__datetime .input--time {
+    flex: 1;
+}
+
+.event-form__actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+}
+
+/* Custom fields section */
+.custom-fields-section {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    border-top: 1px solid #eee;
+    padding-top: 24px;
+}
+
+.custom-fields-section__title {
+    margin-bottom: 8px;
+}
+
+.custom-fields-section__description {
+    margin-bottom: 16px;
+    color: #666;
+}
+
+/* Invitations list section */
+.invitations-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.invitations-section__title {
+    margin-bottom: 16px;
+}
+
+/* Delete event button */
+.delete-event {
+    margin-top: 40px;
+    text-align: center;
+}
+
+/* For backwards compatibility */
+#event-form,
+#edit-event-form {
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+#invitations-list {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#custom-fields-container {
+    margin-bottom: 24px;
+}
+
+#email-input-container {
+    margin-bottom: 16px;
+}

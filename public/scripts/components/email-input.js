@@ -12,23 +12,23 @@ export default class EmailTagInput {
 
   render() {
     this.container.innerHTML = `
-      <div class="email-tag-input-container">
+      <div class="email-tag-input__container">
         <input
           type="email"
           placeholder="Ange e-postadress och tryck Enter"
-          class="input-field email-input"
+          class="input input--email"
         />
-        <div class="email-tags"></div>
-        <div class="email-tags-more" style="display: none;">
-          <button type="button" class="btn show-more-btn">Visa fler...</button>
+        <div class="email-tag-input__tags"></div>
+        <div class="email-tag__more" style="display: none;">
+          <button type="button" class="btn btn--small show-more-btn">Visa fler...</button>
         </div>
-        <div class="invalid-feedback" style="display: none; color: red;"></div>
+        <div class="invalid-feedback" style="display: none;"></div>
       </div>
     `;
 
-    this.inputElement = this.container.querySelector('.email-input');
-    this.tagsContainer = this.container.querySelector('.email-tags');
-    this.tagsMoreContainer = this.container.querySelector('.email-tags-more');
+    this.inputElement = this.container.querySelector('.input--email');
+    this.tagsContainer = this.container.querySelector('.email-tag-input__tags');
+    this.tagsMoreContainer = this.container.querySelector('.email-tag__more');
     this.showMoreBtn = this.container.querySelector('.show-more-btn');
     this.feedbackElement = this.container.querySelector('.invalid-feedback');
 
@@ -80,19 +80,13 @@ export default class EmailTagInput {
     emailsToShow.forEach((email, index) => {
       const tag = document.createElement('span');
       tag.className = 'email-tag';
-      tag.style.display = 'inline-block';
-      tag.style.margin = '2px';
-      tag.style.padding = '2px 4px';
-      tag.style.border = '1px solid #ccc';
-      tag.style.borderRadius = '3px';
-      tag.style.background = '#f5f5f5';
 
       tag.innerHTML = `
         ${email}
-        <button type="button" class="remove-tag btn-small" data-index="${index}" style="border: none; background: none; cursor: pointer; font-weight: bold; margin-left: 4px;">×</button>
+        <button type="button" class="email-tag__remove" data-index="${index}">×</button>
       `;
 
-      tag.querySelector('.remove-tag').addEventListener('click', () => {
+      tag.querySelector('.email-tag__remove').addEventListener('click', () => {
         this.removeEmail(index);
       });
 

@@ -2,37 +2,48 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anmäl dig till evenemang</title>
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/components/buttons.css">
+    <link rel="stylesheet" href="./styles/components/inputs.css">
+    <link rel="stylesheet" href="./styles/pages/registration.css">
 </head>
 <body>
-    <form id="registration-form" onsubmit="return false">
-        <div>
-            <label>Deltar du? *</label>
-            <div>
-                <label>
-                    <input type="radio" name="attending" value="yes" required> Ja
-                </label>
-                <label>
-                    <input type="radio" name="attending" value="no" required> Nej
-                </label>
+    <div class="container">
+        <form id="registration-form" class="registration-form" onsubmit="return false">
+            <div class="registration-form__group">
+                <label class="registration-form__label">Deltar du? *</label>
+                <div class="registration-form__radio-group">
+                    <label class="registration-form__radio-label">
+                        <input type="radio" name="attending" value="yes" class="registration-form__radio" required> Ja
+                    </label>
+                    <label class="registration-form__radio-label">
+                        <input type="radio" name="attending" value="no" class="registration-form__radio" required> Nej
+                    </label>
+                </div>
             </div>
-        </div>
 
-        <div id="default-fields">
-            <div>
-                <label>Fullständigt namn *</label>
-                <input type="text" name="name" required>
+            <div id="default-fields">
+                <div class="registration-form__group">
+                    <label class="registration-form__label">Fullständigt namn *</label>
+                    <input type="text" name="name" class="registration-form__input" required>
+                </div>
             </div>
-        </div>
 
-        <div id="custom-fields-container"></div>
+            <div id="custom-fields-container" class="custom-fields"></div>
 
-        <button type="submit">
-            Skicka anmälan
-        </button>
-    </form>
-
-    <a href="./index.html">Tillbaka till startsidan</a>
+            <div class="registration-form__actions">
+                <button type="submit" class="registration-form__submit">
+                    Skicka anmälan
+                </button>
+            </div>
+            
+            <div class="registration-form__footer">
+                <a href="./index.html">Tillbaka till startsidan</a>
+            </div>
+        </form>
+    </div>
 
     <script type="module" src="./scripts/pages/registration.js"></script>
 </body>

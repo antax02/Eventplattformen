@@ -25,15 +25,21 @@ const createEventCard = (event) => {
 
   return `
     <div class="event-card">
-      <h3>${event.title}</h3>
-      <p>Datum: ${formatDateTime(event.eventDate)}</p>
-      <p>Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
-      <p>Inbjudna: ${totalInvitations} personer</p>
-      <p>Svar: ${responded} av ${totalInvitations} (${responseRate}%)</p>
-      <p>Deltar: ${attending}, Deltar inte: ${notAttending}</p>
-      <a href="./edit-event.html?eventId=${event.id}">
-        <button>Redigera</button>
-      </a>
+      <h3 class="event-card__title">${event.title}</h3>
+      <p class="event-card__date">Datum: ${formatDateTime(event.eventDate)}</p>
+      <p class="event-card__deadline">Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
+      
+      <div class="event-card__stats">
+        <p>Inbjudna: ${totalInvitations} personer</p>
+        <p>Svar: ${responded} av ${totalInvitations} (${responseRate}%)</p>
+        <p>Deltar: ${attending}, Deltar inte: ${notAttending}</p>
+      </div>
+      
+      <div class="event-card__actions">
+        <a href="./edit-event.html?eventId=${event.id}" class="btn">
+          Redigera
+        </a>
+      </div>
     </div>
   `;
 };
@@ -53,7 +59,7 @@ auth.onAuthStateChanged(async (user) => {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        eventsList.innerHTML = "<div>Inga evenemang hittades.</div>";
+        eventsList.innerHTML = `<div class="events-empty">Inga evenemang hittades.</div>`;
       } else {
         eventsList.innerHTML = querySnapshot.docs
           .map(doc => createEventCard({ id: doc.id, ...doc.data() }))
@@ -62,7 +68,7 @@ auth.onAuthStateChanged(async (user) => {
 
     } catch (error) {
       console.error("Error fetching events:", error);
-      eventsList.innerHTML = "<div>Kunde inte ladda evenemang</div>";
+      eventsList.innerHTML = `<div class="events-empty">Kunde inte ladda evenemang</div>`;
     }
   } else {
     window.location.href = './login.html';

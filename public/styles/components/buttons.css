@@ -1,0 +1,106 @@
+.btn {
+    display: inline-block;
+    background-color: #e7e7e7; 
+    color: #333;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #f9f9f9;
+    border-color: #e7e7e7;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn--primary {
+    background-color: #4a6ee0;
+    color: white;
+}
+
+.btn--primary:hover {
+    background-color: #3a5dd0;
+    border-color: #4a6ee0;
+}
+
+.btn--danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn--danger:hover {
+    background-color: #f9f9f9;
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.btn--small {
+    padding: 4px 8px;
+    font-size: 0.875rem;
+}
+
+.btn--large {
+    padding: 12px 24px;
+    font-size: 1.125rem;
+}
+
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn--icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn--link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #4a6ee0;
+    text-decoration: underline;
+}
+
+.btn--link:hover {
+    color: #3a5dd0;
+    background: none;
+    border: none;
+}
+
+.redbtn {
+    background-color: #ef4444;
+    color: white;
+}
+
+.redbtn:hover {
+    background-color: #f9f9f9;
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.remove-field,
+.remove-tag {
+    padding: 2px 6px;
+    font-size: 0.875rem;
+}
+
+.add-field-btn {
+    margin-top: 8px;
+}
+
+.show-more-btn,
+.toggle-btn {
+    margin-top: 8px;
+    font-size: 0.875rem;
+}

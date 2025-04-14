@@ -10,14 +10,14 @@ export default class CustomFieldsInput {
 
   render() {
     this.container.innerHTML = `
-      <div class="custom-fields-container">
-        <div class="fields-list"></div>
+      <div class="custom-fields">
+        <div class="custom-fields__list"></div>
         <button type="button" id="add-field-btn" class="btn add-field-btn">Lägg till fält</button>
         <input type="hidden" name="customFieldsJson" value="[]">
       </div>
     `;
 
-    this.fieldsList = this.container.querySelector('.fields-list');
+    this.fieldsList = this.container.querySelector('.custom-fields__list');
     this.addFieldBtn = this.container.querySelector('#add-field-btn');
     this.customFieldsJsonInput = this.container.querySelector('input[name="customFieldsJson"]');
 
@@ -37,18 +37,15 @@ export default class CustomFieldsInput {
     this.fields.forEach((field, index) => {
       const fieldElement = document.createElement('div');
       fieldElement.className = 'field-item';
-      fieldElement.style.marginBottom = '10px';
-      fieldElement.style.padding = '10px';
-      fieldElement.style.border = '1px solid #ddd';
 
       fieldElement.innerHTML = `
-        <div class="field-row">
+        <div class="form__field-row">
           <label class="field-label">Fältnamn:</label>
-          <input type="text" class="field-label input-field text-input" value="${field.label}" required>
+          <input type="text" class="input input--text field-label" value="${field.label}" required>
         </div>
-        <div class="field-row">
+        <div class="form__field-row">
           <label class="field-label">Typ:</label>
-          <select class="field-type input-field select-input">
+          <select class="input input--select field-type">
             <option value="text" ${field.type === 'text' ? 'selected' : ''}>Text</option>
             <option value="number" ${field.type === 'number' ? 'selected' : ''}>Nummer</option>
             <option value="email" ${field.type === 'email' ? 'selected' : ''}>E-post</option>
@@ -57,13 +54,13 @@ export default class CustomFieldsInput {
           </select>
         </div>
 
-        <div class="field-row checkbox-container">
+        <div class="form__field-row">
           <label class="checkbox-label">
-            <input type="checkbox" class="field-required checkbox-input" ${field.required ? 'checked' : ''}>
+            <input type="checkbox" class="input--checkbox field-required" ${field.required ? 'checked' : ''}>
             Obligatoriskt
           </label>
         </div>
-        <button type="button" class="remove-field btn" data-index="${index}">Ta bort</button>
+        <button type="button" class="btn btn--danger btn--small remove-field" data-index="${index}">Ta bort</button>
       `;
 
       const typeSelect = fieldElement.querySelector('.field-type');

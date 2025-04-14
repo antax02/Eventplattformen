@@ -2,55 +2,65 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skapa evenemang</title>
     <link rel="stylesheet" href="./styles/main.css">
-    <link rel="stylesheet" href="./styles/components/form.css">
+    <link rel="stylesheet" href="./styles/components/buttons.css">
+    <link rel="stylesheet" href="./styles/components/inputs.css">
+    <link rel="stylesheet" href="./styles/pages/event-form.css">
 </head>
 <body>
-    <h1>Skapa evenemang</h1>
+    <h1 class="event-form__title">Skapa evenemang</h1>
 
-    <form id="event-form">
-        <div>
-            <label>Titel:</label>
-            <input type="text" name="title" required>
+    <form id="event-form" class="event-form">
+        <div class="form__group">
+            <label class="form__label">Titel:</label>
+            <input type="text" name="title" class="input input--text" required>
         </div>
 
-        <div>
-            <label>Evenemangsdatum:</label>
-            <input type="date" name="eventDate" required>
-            <input type="time" name="eventTime" required>
+        <div class="form__group">
+            <label class="form__label">Evenemangsdatum:</label>
+            <div class="event-form__datetime">
+                <input type="date" name="eventDate" class="input input--date" required>
+                <input type="time" name="eventTime" class="input input--time" required>
+            </div>
         </div>
-        <div>
-            <label>Sista svarsdatum:</label>
-            <input type="date" name="responseDeadline" required>
-            <input type="time" name="responseTime" required>
-        </div>
-
-        <div>
-            <label>Beskrivning:</label>
-            <textarea name="description"></textarea>
-        </div>
-
-        <div>
-            <label>Lägg till via CSV-fil:</label>
-            <input type="file" name="csv" accept=".csv">
-            <small>CSV-filen måste ha en kolumn "email"</small>
+        
+        <div class="form__group">
+            <label class="form__label">Sista svarsdatum:</label>
+            <div class="event-form__datetime">
+                <input type="date" name="responseDeadline" class="input input--date" required>
+                <input type="time" name="responseTime" class="input input--time" required>
+            </div>
         </div>
 
-        <div>
-            <label>Eller lägg till e-postadresser:</label>
-            <div id="email-input-container"></div>
+        <div class="form__group">
+            <label class="form__label">Beskrivning:</label>
+            <textarea name="description" class="input input--textarea"></textarea>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label">Lägg till via CSV-fil:</label>
+            <input type="file" name="csv" accept=".csv" class="input input--file">
+            <small class="form__hint">CSV-filen måste ha en kolumn "email"</small>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label">Eller lägg till e-postadresser:</label>
+            <div id="email-input-container" class="email-tag-input"></div>
             <input type="hidden" name="emailsJson" value="[]">
         </div>
 
-        <div>
-            <h3>Anpassade fält för anmälan</h3>
-            <p>Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
-            <div id="custom-fields-container"></div>
+        <div class="custom-fields-section">
+            <h3 class="custom-fields-section__title">Anpassade fält för anmälan</h3>
+            <p class="custom-fields-section__description">Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
+            <div id="custom-fields-container" class="custom-fields"></div>
         </div>
 
-        <button type="submit" class="btn">Skapa evenemang</button>
-        <button type="button" id="cancel-btn" class="btn redbtn">Avbryt</button>
+        <div class="event-form__actions">
+            <button type="submit" class="btn">Skapa evenemang</button>
+            <button type="button" id="cancel-btn" class="btn btn--danger">Avbryt</button>
+        </div>
     </form>
 
     <script type="module" src="./scripts/components/email-input.js"></script>

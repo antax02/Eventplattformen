@@ -1,0 +1,209 @@
+/* Form layout */
+.form {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.form__group {
+    margin-bottom: 16px;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.form__field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.form__hint {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Base input styles */
+.input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color 0.2s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #4a6ee0;
+}
+
+.input--invalid {
+    border-color: #ef4444;
+}
+
+/* Input types */
+.input--text,
+.input--email,
+.input--tel,
+.input--number,
+.input--password {
+    /* Base styles covered above */
+}
+
+.input--textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.input--select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    padding-right: 32px;
+}
+
+.input--date,
+.input--time {
+    width: auto;
+}
+
+.input--checkbox,
+.input--radio {
+    width: auto;
+    margin-right: 8px;
+}
+
+.input--file {
+    background-color: #e7e7e7;
+    padding: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.input--file:hover {
+    background-color: #f9f9f9;
+    border-color: #e7e7e7;
+}
+
+input::file-selector-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Checkbox and Radio groups */
+.checkbox-group,
+.radio-group {
+    display: flex;
+    gap: 16px;
+}
+
+.checkbox-label,
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Email tag input component */
+.email-tag-input {
+    margin-bottom: 16px;
+}
+
+.email-tag-input__container {
+    width: 100%;
+}
+
+.email-tag-input__tags {
+    margin: 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.email-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.875rem;
+}
+
+.email-tag__remove {
+    margin-left: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #666;
+}
+
+.email-tag__more {
+    margin-top: 8px;
+}
+
+.invalid-feedback {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 4px;
+}
+
+/* Custom fields component */
+.custom-fields {
+    margin-bottom: 24px;
+}
+
+.custom-fields__list {
+    margin-bottom: 8px;
+}
+
+.field-item {
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* For backward compatibility */
+.input-field {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.text-input,
+.email-input,
+.date-input,
+.time-input,
+.number-input,
+.tel-input,
+.textarea-input,
+.select-input {
+    /* Styles inherited from input-field */
+}
+
+.checkbox-input,
+.radio-input {
+    margin-right: 8px;
+}
+
+.field-label {
+    display: block;
+    margin-bottom: 4px;
+}
