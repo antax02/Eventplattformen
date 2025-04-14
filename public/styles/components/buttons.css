@@ -22,60 +22,30 @@
     cursor: not-allowed;
 }
 
-.btn--primary {
+.primary-btn {
     background-color: #4a6ee0;
     color: white;
 }
 
-.btn--primary:hover {
+.primary-btn:hover {
     background-color: #3a5dd0;
     border-color: #4a6ee0;
 }
 
-.btn--danger {
+.danger-btn {
     background-color: #ef4444;
     color: white;
 }
 
-.btn--danger:hover {
+.danger-btn:hover {
     background-color: #f9f9f9;
     border-color: #ef4444;
     color: #ef4444;
 }
 
-.btn--small {
+.small-btn {
     padding: 4px 8px;
     font-size: 0.875rem;
-}
-
-.btn--large {
-    padding: 12px 24px;
-    font-size: 1.125rem;
-}
-
-.btn-group {
-    display: flex;
-    gap: 8px;
-}
-
-.btn--icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn--link {
-    background: none;
-    border: none;
-    padding: 0;
-    color: #4a6ee0;
-    text-decoration: underline;
-}
-
-.btn--link:hover {
-    color: #3a5dd0;
-    background: none;
-    border: none;
 }
 
 .redbtn {

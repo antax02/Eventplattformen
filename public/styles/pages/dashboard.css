@@ -6,7 +6,7 @@
     margin-bottom: 32px;
 }
 
-.dashboard-header__title {
+.dashboard-title {
     margin-bottom: 0;
 }
 
@@ -32,23 +32,23 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.event-card__title {
+.card-title {
     margin-bottom: 12px;
     font-size: 1.25rem;
 }
 
-.event-card__date,
-.event-card__deadline,
-.event-card__stats {
+.card-date,
+.card-deadline,
+.card-stats {
     margin-bottom: 8px;
     font-size: 0.9rem;
 }
 
-.event-card__stats {
+.card-stats {
     margin-top: 16px;
 }
 
-.event-card__actions {
+.card-actions {
     margin-top: 16px;
     text-align: right;
 }

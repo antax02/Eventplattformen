@@ -55,18 +55,18 @@ function generateCustomFields(fields) {
 
   fields.forEach(field => {
     const fieldContainer = document.createElement('div');
-    fieldContainer.className = 'registration-form__group custom-field';
+    fieldContainer.className = 'registration-group custom-field';
 
     const label = document.createElement('label');
     label.textContent = `${field.label}${field.required ? ' *' : ''}`;
-    label.className = 'registration-form__label';
+    label.className = 'registration-label';
     fieldContainer.appendChild(label);
 
     let inputElement;
 
     inputElement = document.createElement('input');
     inputElement.type = field.type || 'text';
-    inputElement.className = 'registration-form__input';
+    inputElement.className = 'registration-input';
 
     inputElement.name = field.id;
     inputElement.id = field.id;

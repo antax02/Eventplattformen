@@ -12,23 +12,23 @@ export default class EmailTagInput {
 
   render() {
     this.container.innerHTML = `
-      <div class="email-tag-input__container">
+      <div class="email-container">
         <input
           type="email"
           placeholder="Ange e-postadress och tryck Enter"
-          class="input input--email"
+          class="input email-input"
         />
-        <div class="email-tag-input__tags"></div>
-        <div class="email-tag__more" style="display: none;">
-          <button type="button" class="btn btn--small show-more-btn">Visa fler...</button>
+        <div class="email-tags"></div>
+        <div class="email-more" style="display: none;">
+          <button type="button" class="btn small-btn show-more-btn">Visa fler...</button>
         </div>
         <div class="invalid-feedback" style="display: none;"></div>
       </div>
     `;
 
-    this.inputElement = this.container.querySelector('.input--email');
-    this.tagsContainer = this.container.querySelector('.email-tag-input__tags');
-    this.tagsMoreContainer = this.container.querySelector('.email-tag__more');
+    this.inputElement = this.container.querySelector('.email-input');
+    this.tagsContainer = this.container.querySelector('.email-tags');
+    this.tagsMoreContainer = this.container.querySelector('.email-more');
     this.showMoreBtn = this.container.querySelector('.show-more-btn');
     this.feedbackElement = this.container.querySelector('.invalid-feedback');
 
@@ -83,10 +83,10 @@ export default class EmailTagInput {
 
       tag.innerHTML = `
         ${email}
-        <button type="button" class="email-tag__remove" data-index="${index}">×</button>
+        <button type="button" class="remove-email" data-index="${index}">×</button>
       `;
 
-      tag.querySelector('.email-tag__remove').addEventListener('click', () => {
+      tag.querySelector('.remove-email').addEventListener('click', () => {
         this.removeEmail(index);
       });
 

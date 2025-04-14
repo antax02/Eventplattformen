@@ -11,68 +11,68 @@
     <link rel="stylesheet" href="./styles/pages/event-form.css">
 </head>
 <body>
-    <h1 class="event-form__title">Redigera evenemang</h1>
+    <h1 class="event-title">Redigera evenemang</h1>
 
     <form id="edit-event-form" class="event-form">
-        <div class="form__group">
-            <label class="form__label">Titel</label>
-            <input type="text" name="title" class="input input--text" required>
+        <div class="form-group">
+            <label class="form-label">Titel</label>
+            <input type="text" name="title" class="input text-input" required>
         </div>
 
-        <div class="form__group">
-            <label class="form__label">Evenemangsdatum</label>
-            <div class="event-form__datetime">
-                <input type="date" name="eventDate" class="input input--date" required>
-                <input type="time" name="eventTime" class="input input--time" required>
+        <div class="form-group">
+            <label class="form-label">Evenemangsdatum</label>
+            <div class="datetime-input">
+                <input type="date" name="eventDate" class="input date-input" required>
+                <input type="time" name="eventTime" class="input time-input" required>
             </div>
         </div>
 
-        <div class="form__group">
-            <label class="form__label">Sista svarsdatum</label>
-            <div class="event-form__datetime">
-                <input type="date" name="responseDeadline" class="input input--date" required>
-                <input type="time" name="responseTime" class="input input--time" required>
+        <div class="form-group">
+            <label class="form-label">Sista svarsdatum</label>
+            <div class="datetime-input">
+                <input type="date" name="responseDeadline" class="input date-input" required>
+                <input type="time" name="responseTime" class="input time-input" required>
             </div>
         </div>
 
-        <div class="form__group">
-            <label class="form__label">Beskrivning</label>
-            <textarea name="description" class="input input--textarea"></textarea>
+        <div class="form-group">
+            <label class="form-label">Beskrivning</label>
+            <textarea name="description" class="input textarea"></textarea>
         </div>
 
-        <div class="form__group col">
-            <label class="form__label">Lägg till deltagare via CSV</label>
-            <input type="file" name="csv" accept=".csv" class="input input--file">
-            <small class="form__hint">CSV-filen måste ha en kolumn "email"</small>
+        <div class="form-group col">
+            <label class="form-label">Lägg till deltagare via CSV</label>
+            <input type="file" name="csv" accept=".csv" class="input file-input">
+            <small class="form-hint">CSV-filen måste ha en kolumn "email"</small>
         </div>
 
-        <div class="form__group">
-            <label class="form__label">Eller lägg till nya e-postadresser</label>
+        <div class="form-group">
+            <label class="form-label">Eller lägg till nya e-postadresser</label>
             <div id="email-input-container" class="email-tag-input"></div>
             <input type="hidden" name="emailsJson" value="[]">
         </div>
 
         <div class="custom-fields-section">
-            <h3 class="custom-fields-section__title">Anpassade fält för anmälan</h3>
-            <p class="custom-fields-section__description">Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
+            <h3 class="custom-fields-title">Anpassade fält för anmälan</h3>
+            <p class="custom-fields-description">Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
             <div id="custom-fields-container" class="custom-fields"></div>
         </div>
 
-        <div class="form__group">
+        <div class="form-group">
             <label class="checkbox-label">
-                <input type="checkbox" name="resend" class="input--checkbox">
+                <input type="checkbox" name="resend" class="checkbox">
                 Skicka igen till redan inbjudna
             </label>
         </div>
 
-        <div class="event-form__actions">
+        <div class="form-actions">
             <button type="submit" class="btn">Uppdatera evenemang</button>
-            <button type="button" id="cancel-btn" class="btn btn--danger">Avbryt</button>
+            <button type="button" id="cancel-btn" class="btn danger-btn">Avbryt</button>
         </div>
     </form>
 
     <div id="invitations-list" class="invitations-section">
-        <h2 class="invitations-section__title">Inbjudna deltagare</h2>
+        <h2 class="invitations-title">Inbjudna deltagare</h2>
         <table class="table invitations-table">
             <thead>
                 <tr>
@@ -89,13 +89,13 @@
                 </tr>
             </tbody>
         </table>
-        <div id="show-more-invitations" class="invitations-table__more" style="display: none;">
-            <button id="toggle-invitations-btn" class="btn btn--small">Visa fler...</button>
+        <div id="show-more-invitations" class="more-invitations" style="display: none;">
+            <button id="toggle-invitations-btn" class="btn small-btn">Visa fler...</button>
         </div>
     </div>
 
     <div class="delete-event">
-        <button id="delete-event-btn" type="button" class="btn btn--danger">Radera evenemang</button>
+        <button id="delete-event-btn" type="button" class="btn danger-btn">Radera evenemang</button>
     </div>
 
     <script type="module" src="./scripts/components/email-input.js"></script>

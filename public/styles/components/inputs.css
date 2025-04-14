@@ -4,24 +4,24 @@
     margin: 20px auto;
 }
 
-.form__group {
+.form-group {
     margin-bottom: 16px;
 }
 
-.form__label {
+.form-label {
     display: block;
     margin-bottom: 4px;
     font-weight: 500;
 }
 
-.form__field-row {
+.field-row {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 8px;
 }
 
-.form__hint {
+.form-hint {
     font-size: 0.875rem;
     color: #666;
     margin-top: 4px;
@@ -43,25 +43,25 @@
     border-color: #4a6ee0;
 }
 
-.input--invalid {
+.invalid {
     border-color: #ef4444;
 }
 
 /* Input types */
-.input--text,
-.input--email,
-.input--tel,
-.input--number,
-.input--password {
+.text-input,
+.email-input,
+.tel-input,
+.number-input,
+.password-input {
     /* Base styles covered above */
 }
 
-.input--textarea {
+.textarea {
     min-height: 100px;
     resize: vertical;
 }
 
-.input--select {
+.select {
     appearance: none;
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -70,25 +70,25 @@
     padding-right: 32px;
 }
 
-.input--date,
-.input--time {
+.date-input,
+.time-input {
     width: auto;
 }
 
-.input--checkbox,
-.input--radio {
+.checkbox,
+.radio {
     width: auto;
     margin-right: 8px;
 }
 
-.input--file {
+.file-input {
     background-color: #e7e7e7;
     padding: 10px;
     border: 2px solid transparent;
     cursor: pointer;
 }
 
-.input--file:hover {
+.file-input:hover {
     background-color: #f9f9f9;
     border-color: #e7e7e7;
 }
@@ -120,11 +120,11 @@ input::file-selector-button {
     margin-bottom: 16px;
 }
 
-.email-tag-input__container {
+.email-container {
     width: 100%;
 }
 
-.email-tag-input__tags {
+.email-tags {
     margin: 8px 0;
     display: flex;
     flex-wrap: wrap;
@@ -141,7 +141,7 @@ input::file-selector-button {
     font-size: 0.875rem;
 }
 
-.email-tag__remove {
+.remove-email {
     margin-left: 4px;
     border: none;
     background: none;
@@ -151,7 +151,7 @@ input::file-selector-button {
     color: #666;
 }
 
-.email-tag__more {
+.email-more {
     margin-top: 8px;
 }
 
@@ -166,7 +166,7 @@ input::file-selector-button {
     margin-bottom: 24px;
 }
 
-.custom-fields__list {
+.fields-list {
     margin-bottom: 8px;
 }
 

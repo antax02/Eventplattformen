@@ -12,34 +12,34 @@
 <body>
     <div class="container">
         <form id="registration-form" class="registration-form" onsubmit="return false">
-            <div class="registration-form__group">
-                <label class="registration-form__label">Deltar du? *</label>
-                <div class="registration-form__radio-group">
-                    <label class="registration-form__radio-label">
-                        <input type="radio" name="attending" value="yes" class="registration-form__radio" required> Ja
+            <div class="registration-group">
+                <label class="registration-label">Deltar du? *</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="attending" value="yes" class="radio" required> Ja
                     </label>
-                    <label class="registration-form__radio-label">
-                        <input type="radio" name="attending" value="no" class="registration-form__radio" required> Nej
+                    <label class="radio-label">
+                        <input type="radio" name="attending" value="no" class="radio" required> Nej
                     </label>
                 </div>
             </div>
 
             <div id="default-fields">
-                <div class="registration-form__group">
-                    <label class="registration-form__label">Fullständigt namn *</label>
-                    <input type="text" name="name" class="registration-form__input" required>
+                <div class="registration-group">
+                    <label class="registration-label">Fullständigt namn *</label>
+                    <input type="text" name="name" class="registration-input" required>
                 </div>
             </div>
 
             <div id="custom-fields-container" class="custom-fields"></div>
 
-            <div class="registration-form__actions">
-                <button type="submit" class="registration-form__submit">
+            <div class="registration-actions">
+                <button type="submit" class="submit-button">
                     Skicka anmälan
                 </button>
             </div>
             
-            <div class="registration-form__footer">
+            <div class="registration-footer">
                 <a href="./index.html">Tillbaka till startsidan</a>
             </div>
         </form>

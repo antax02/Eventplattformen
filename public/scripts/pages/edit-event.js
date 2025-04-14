@@ -15,7 +15,21 @@ let showingAllInvitations = false;
 const maxDisplayedInvitations = 10;
 let currentCustomFields = [];
 
+// Make sure cancel button works
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("DOM loaded, setting up event handlers");
+  
+  const cancelButton = document.getElementById('cancel-btn');
+  if (cancelButton) {
+    console.log("Cancel button found, adding event listener");
+    cancelButton.addEventListener('click', () => {
+      console.log("Cancel button clicked");
+      window.location.href = './dashboard.html';
+    });
+  } else {
+    console.error("Cancel button not found!");
+  }
+
   const emailInputContainer = document.getElementById('email-input-container');
   const emailsJsonInput = form.emailsJson;
 
@@ -171,7 +185,6 @@ const displayInvitations = (invitations) => {
         <td class="status-cell" style="${respondedStyle}">${respondedText}${respondedDate}</td>
         <td class="attending-cell" style="${attendingStyle}">${attendingText}</td>
         <td class="name-cell">${inv.name || '-'}</td>
-        <td class="phone-cell">${inv.phone || '-'}</td>
         <td class="custom-fields-cell">${customFieldsDisplay}</td>
       </tr>
     `;
@@ -293,10 +306,18 @@ async function handleDeleteEvent() {
   }
 }
 
+// Fix the form submission
 form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+  e.preventDefault(); // This is critical to prevent form submission
+  console.log("Form submitted");
 
   try {
+    if (!eventId) {
+      throw new Error("Ingen händelse-ID angiven!");
+    }
+    
+    console.log("Event ID:", eventId);
+    
     const eventRef = doc(db, "events", eventId);
     const eventSnap = await getDoc(eventRef);
 
@@ -377,8 +398,4 @@ form.addEventListener('submit', async (e) => {
     console.error("Fel vid uppdatering:", error);
     alert("Kunde inte uppdatera evenemanget: " + error.message);
   }
-});
-
-document.getElementById('cancel-btn').addEventListener('click', () => {
-  window.location.href = './dashboard.html';
 });

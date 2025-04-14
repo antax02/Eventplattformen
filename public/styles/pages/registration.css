@@ -8,49 +8,49 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.registration-form__title {
+.registration-title {
     text-align: center;
     margin-bottom: 32px;
 }
 
-.registration-form__group {
+.registration-group {
     margin-bottom: 24px;
 }
 
-.registration-form__label {
+.registration-label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
 }
 
-.registration-form__input {
+.registration-input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
-.registration-form__radio-group {
+.radio-group {
     display: flex;
     gap: 24px;
     margin-top: 8px;
 }
 
-.registration-form__radio-label {
+.radio-label {
     display: flex;
     align-items: center;
     cursor: pointer;
 }
 
-.registration-form__radio {
+.radio {
     margin-right: 8px;
 }
 
-.registration-form__actions {
+.registration-actions {
     margin-top: 32px;
 }
 
-.registration-form__submit {
+.submit-button {
     width: 100%;
     padding: 12px;
     background-color: #4a6ee0;
@@ -62,11 +62,11 @@
     transition: background-color 0.2s ease;
 }
 
-.registration-form__submit:hover {
+.submit-button:hover {
     background-color: #3a5dd0;
 }
 
-.registration-form__footer {
+.registration-footer {
     margin-top: 24px;
     text-align: center;
 }
@@ -86,12 +86,12 @@
     padding: 64px 20px;
 }
 
-.thank-you__title {
+.thank-you-title {
     font-size: 2rem;
     margin-bottom: 16px;
 }
 
-.thank-you__message {
+.thank-you-message {
     margin-bottom: 32px;
     color: #666;
 }

@@ -11,13 +11,13 @@ export default class CustomFieldsInput {
   render() {
     this.container.innerHTML = `
       <div class="custom-fields">
-        <div class="custom-fields__list"></div>
+        <div class="fields-list"></div>
         <button type="button" id="add-field-btn" class="btn add-field-btn">Lägg till fält</button>
         <input type="hidden" name="customFieldsJson" value="[]">
       </div>
     `;
 
-    this.fieldsList = this.container.querySelector('.custom-fields__list');
+    this.fieldsList = this.container.querySelector('.fields-list');
     this.addFieldBtn = this.container.querySelector('#add-field-btn');
     this.customFieldsJsonInput = this.container.querySelector('input[name="customFieldsJson"]');
 
@@ -39,13 +39,13 @@ export default class CustomFieldsInput {
       fieldElement.className = 'field-item';
 
       fieldElement.innerHTML = `
-        <div class="form__field-row">
+        <div class="field-row">
           <label class="field-label">Fältnamn:</label>
-          <input type="text" class="input input--text field-label" value="${field.label}" required>
+          <input type="text" class="input text-input field-label" value="${field.label}" required>
         </div>
-        <div class="form__field-row">
+        <div class="field-row">
           <label class="field-label">Typ:</label>
-          <select class="input input--select field-type">
+          <select class="input select field-type">
             <option value="text" ${field.type === 'text' ? 'selected' : ''}>Text</option>
             <option value="number" ${field.type === 'number' ? 'selected' : ''}>Nummer</option>
             <option value="email" ${field.type === 'email' ? 'selected' : ''}>E-post</option>
@@ -54,13 +54,13 @@ export default class CustomFieldsInput {
           </select>
         </div>
 
-        <div class="form__field-row">
+        <div class="field-row">
           <label class="checkbox-label">
-            <input type="checkbox" class="input--checkbox field-required" ${field.required ? 'checked' : ''}>
+            <input type="checkbox" class="checkbox field-required" ${field.required ? 'checked' : ''}>
             Obligatoriskt
           </label>
         </div>
-        <button type="button" class="btn btn--danger btn--small remove-field" data-index="${index}">Ta bort</button>
+        <button type="button" class="btn danger-btn small-btn remove-field" data-index="${index}">Ta bort</button>
       `;
 
       const typeSelect = fieldElement.querySelector('.field-type');

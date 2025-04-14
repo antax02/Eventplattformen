@@ -25,17 +25,17 @@ const createEventCard = (event) => {
 
   return `
     <div class="event-card">
-      <h3 class="event-card__title">${event.title}</h3>
-      <p class="event-card__date">Datum: ${formatDateTime(event.eventDate)}</p>
-      <p class="event-card__deadline">Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
+      <h3 class="card-title">${event.title}</h3>
+      <p class="card-date">Datum: ${formatDateTime(event.eventDate)}</p>
+      <p class="card-deadline">Anmälningsslut: ${formatDateTime(event.responseDeadline)}</p>
       
-      <div class="event-card__stats">
+      <div class="card-stats">
         <p>Inbjudna: ${totalInvitations} personer</p>
         <p>Svar: ${responded} av ${totalInvitations} (${responseRate}%)</p>
         <p>Deltar: ${attending}, Deltar inte: ${notAttending}</p>
       </div>
       
-      <div class="event-card__actions">
+      <div class="card-actions">
         <a href="./edit-event.html?eventId=${event.id}" class="btn">
           Redigera
         </a>

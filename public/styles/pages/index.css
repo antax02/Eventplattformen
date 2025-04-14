@@ -9,24 +9,24 @@
     padding: 20px;
 }
 
-.home__title {
+.home-title {
     font-size: 2.5rem;
     margin-bottom: 24px;
 }
 
-.home__subtitle {
+.home-subtitle {
     font-size: 1.25rem;
     color: #666;
     margin-bottom: 48px;
     max-width: 600px;
 }
 
-.home__actions {
+.home-actions {
     display: flex;
     gap: 16px;
 }
 
-.home__button {
+.home-button {
     padding: 12px 24px;
     background-color: #4a6ee0;
     color: white;
@@ -37,17 +37,17 @@
     transition: background-color 0.2s ease;
 }
 
-.home__button:hover {
+.home-button:hover {
     background-color: #3a5dd0;
     text-decoration: none;
 }
 
-.home__button--secondary {
+.secondary-button {
     background-color: #e7e7e7;
     color: #333;
 }
 
-.home__button--secondary:hover {
+.secondary-button:hover {
     background-color: #d7d7d7;
 }
 
@@ -60,11 +60,11 @@
     min-height: 80vh;
 }
 
-.login__title {
+.login-title {
     margin-bottom: 32px;
 }
 
-.login__button {
+.login-button {
     margin-bottom: 24px;
     padding: 12px 24px;
     background-color: white;
@@ -79,10 +79,10 @@
     transition: background-color 0.2s ease;
 }
 
-.login__button:hover {
+.login-button:hover {
     background-color: #f5f5f5;
 }
 
-.login__footer {
+.login-footer {
     margin-top: 24px;
 }
