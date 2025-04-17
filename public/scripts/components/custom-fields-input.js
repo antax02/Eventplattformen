@@ -41,7 +41,7 @@ export default class CustomFieldsInput {
       fieldElement.innerHTML = `
         <div class="field-row">
           <label class="field-label">Fältnamn:</label>
-          <input type="text" class="input text-input field-label" value="${field.label}" required>
+          <input type="text" class="input text-input field-name-input" value="${field.label || ''}" required>
         </div>
         <div class="field-row">
           <label class="field-label">Typ:</label>
@@ -63,21 +63,30 @@ export default class CustomFieldsInput {
         <button type="button" class="btn danger-btn small-btn remove-field" data-index="${index}">Ta bort</button>
       `;
 
+      // Changed field-label to field-name-input class
+      const nameInput = fieldElement.querySelector('.field-name-input');
       const typeSelect = fieldElement.querySelector('.field-type');
+      const requiredCheckbox = fieldElement.querySelector('.field-required');
+      const removeButton = fieldElement.querySelector('.remove-field');
+
+      // Set up event listeners for each input element
+      nameInput.addEventListener('input', () => {
+        this.updateField(index);
+      });
+
+      nameInput.addEventListener('blur', () => {
+        this.updateField(index);
+      });
 
       typeSelect.addEventListener('change', () => {
         this.updateField(index);
       });
 
-      fieldElement.querySelector('.field-label').addEventListener('input', () => {
+      requiredCheckbox.addEventListener('change', () => {
         this.updateField(index);
       });
 
-      fieldElement.querySelector('.field-required').addEventListener('change', () => {
-        this.updateField(index);
-      });
-
-      fieldElement.querySelector('.remove-field').addEventListener('click', () => {
+      removeButton.addEventListener('click', () => {
         this.removeField(index);
       });
 
@@ -87,9 +96,17 @@ export default class CustomFieldsInput {
 
   updateField(index) {
     const fieldElement = this.fieldsList.children[index];
-    const label = fieldElement.querySelector('.field-label').value.trim();
-    const type = fieldElement.querySelector('.field-type').value;
-    const required = fieldElement.querySelector('.field-required').checked;
+    if (!fieldElement) return;
+    
+    const nameInput = fieldElement.querySelector('.field-name-input');
+    const typeSelect = fieldElement.querySelector('.field-type');
+    const requiredCheckbox = fieldElement.querySelector('.field-required');
+    
+    if (!nameInput || !typeSelect || !requiredCheckbox) return;
+    
+    const label = nameInput.value.trim();
+    const type = typeSelect.value;
+    const required = requiredCheckbox.checked;
 
     this.fields[index] = {
       id: this.fields[index].id,

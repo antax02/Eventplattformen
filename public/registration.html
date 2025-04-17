@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="container">
-        <form id="registration-form" class="registration-form" onsubmit="return false">
+        <form id="registration-form" class="registration-form">
             <div class="registration-group">
                 <label class="registration-label">Deltar du? *</label>
                 <div class="radio-group">
@@ -26,8 +26,8 @@
 
             <div id="default-fields">
                 <div class="registration-group">
-                    <label class="registration-label">Fullständigt namn *</label>
-                    <input type="text" name="name" class="registration-input" required>
+                    <label class="registration-label" for="default-name">Fullständigt namn *</label>
+                    <input type="text" name="name" id="default-name" class="registration-input" required>
                 </div>
             </div>
 

@@ -3,6 +3,7 @@ import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0
 
 const form = document.getElementById('registration-form');
 const customFieldsContainer = document.getElementById('custom-fields-container');
+const defaultFields = document.getElementById('default-fields');
 const urlParams = new URLSearchParams(window.location.search);
 const eventId = urlParams.get('eventId');
 const token = urlParams.get('token');
@@ -11,6 +12,26 @@ let invitationIndex = -1;
 
 if (!eventId || !token) {
   window.location.href = './index.html';
+}
+
+// Remove onsubmit attribute if it exists
+if (form.hasAttribute('onsubmit')) {
+  form.removeAttribute('onsubmit');
+}
+
+// Fix hidden required fields
+function fixHiddenRequiredFields() {
+  document.querySelectorAll('[required]').forEach(el => {
+    let currentNode = el;
+    while (currentNode && currentNode !== document.body) {
+      if (window.getComputedStyle(currentNode).display === 'none') {
+        el.required = false;
+        el.disabled = true;
+        break;
+      }
+      currentNode = currentNode.parentElement;
+    }
+  });
 }
 
 async function loadEventData() {
@@ -38,72 +59,105 @@ async function loadEventData() {
     }
 
     generateCustomFields(eventData.customFields || []);
+    fixHiddenRequiredFields();
   } catch (error) {
-    console.error('Detaljerat fel:', error);
+    console.error('Error:', error);
     alert(`Fel: ${error.message}`);
   }
 }
 
 function generateCustomFields(fields) {
-  if (!fields || fields.length === 0) {
-    return;
-  }
-
-  document.getElementById('default-fields').style.display = 'none';
-
   customFieldsContainer.innerHTML = '';
-
+  
+  // Check if there's a custom name field
+  const hasNameField = fields.some(field => 
+    field.id === 'field_name' || 
+    field.label.toLowerCase() === 'namn' || 
+    field.label.toLowerCase() === 'name'
+  );
+  
+  // Handle default fields visibility
+  defaultFields.style.display = hasNameField ? 'none' : 'block';
+  
+  // Disable default name field if hidden
+  const defaultNameInput = document.querySelector('#default-fields input[name="name"]');
+  if (defaultNameInput && hasNameField) {
+    defaultNameInput.required = false;
+    defaultNameInput.disabled = true;
+  }
+  
+  // Generate custom fields
   fields.forEach(field => {
     const fieldContainer = document.createElement('div');
     fieldContainer.className = 'registration-group custom-field';
-
+    
+    const uniqueId = `custom-${field.id}`;
+    
     const label = document.createElement('label');
     label.textContent = `${field.label}${field.required ? ' *' : ''}`;
     label.className = 'registration-label';
+    label.htmlFor = uniqueId;
+    
+    const input = document.createElement('input');
+    input.type = field.type || 'text';
+    input.className = 'registration-input';
+    input.id = uniqueId;
+    input.name = field.id;
+    input.required = field.required || false;
+    
     fieldContainer.appendChild(label);
-
-    let inputElement;
-
-    inputElement = document.createElement('input');
-    inputElement.type = field.type || 'text';
-    inputElement.className = 'registration-input';
-
-    inputElement.name = field.id;
-    inputElement.id = field.id;
-
-    if (field.required) {
-      inputElement.required = true;
-    }
-
-    fieldContainer.appendChild(inputElement);
+    fieldContainer.appendChild(input);
     customFieldsContainer.appendChild(fieldContainer);
   });
+  
+  setTimeout(fixHiddenRequiredFields, 100);
 }
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-
+  fixHiddenRequiredFields();
+  
   try {
     if (!eventData || invitationIndex === -1) {
       throw new Error('Kunde inte ladda eventdata');
     }
-
-    const attending = form.querySelector('input[name="attending"]:checked').value === 'yes';
-
+    
+    // Get attending value
+    const attendingRadio = form.querySelector('input[name="attending"]:checked');
+    if (!attendingRadio) {
+      throw new Error('Du måste ange om du deltar eller inte');
+    }
+    
+    const attending = attendingRadio.value === 'yes';
+    
+    // Collect custom field values
     const customFieldValues = {};
-    if (eventData.customFields && eventData.customFields.length > 0) {
+    if (eventData.customFields) {
       eventData.customFields.forEach(field => {
-        const input = document.getElementById(field.id);
-        if (input && (input.value || input.type === 'checkbox')) {
-          if (input.type === 'checkbox') {
-            customFieldValues[field.id] = input.checked;
-          } else {
-            customFieldValues[field.id] = input.value;
-          }
+        const input = document.querySelector(`[name="${field.id}"]:not([disabled])`);
+        if (input) {
+          customFieldValues[field.id] = input.type === 'checkbox' ? input.checked : input.value;
         }
       });
     }
-
+    
+    // Get name value
+    let nameValue = null;
+    const customNameField = eventData.customFields && eventData.customFields.find(field => 
+      field.id === 'field_name' || 
+      field.label.toLowerCase() === 'namn' || 
+      field.label.toLowerCase() === 'name'
+    );
+    
+    if (customNameField) {
+      const customNameInput = document.querySelector(`[name="${customNameField.id}"]:not([disabled])`);
+      if (customNameInput) nameValue = customNameInput.value.trim();
+    } else {
+      const defaultNameInput = document.querySelector('input[name="name"]:not([disabled])');
+      if (defaultNameInput) nameValue = defaultNameInput.value.trim();
+    }
+    
+    // Create updated invitation
     const updatedInvitations = [...eventData.invitations];
     updatedInvitations[invitationIndex] = {
       ...updatedInvitations[invitationIndex],
@@ -112,23 +166,24 @@ form.addEventListener('submit', async (e) => {
       respondedAt: new Date(),
       customFieldValues: customFieldValues
     };
-
-    const nameField = document.querySelector('input[name="name"]');
-
-    if (nameField) {
-      updatedInvitations[invitationIndex].name = nameField.value.trim();
+    
+    if (nameValue) {
+      updatedInvitations[invitationIndex].name = nameValue;
     }
-
+    
     await updateDoc(doc(db, 'events', eventId), {
       invitations: updatedInvitations
     });
-
+    
     window.location.href = './thanks.html';
-
+    
   } catch (error) {
-    console.error('Detaljerat fel:', error);
+    console.error('Error:', error);
     alert(`Fel: ${error.message}`);
   }
 });
 
-document.addEventListener('DOMContentLoaded', loadEventData);
+document.addEventListener('DOMContentLoaded', () => {
+  loadEventData();
+  setTimeout(fixHiddenRequiredFields, 500);
+});
