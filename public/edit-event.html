@@ -73,22 +73,23 @@
 
     <div id="invitations-list" class="invitations-section">
         <h2 class="invitations-title">Inbjudna deltagare</h2>
-        <table class="table invitations-table">
-            <thead>
-                <tr>
-                    <th>E-post</th>
-                    <th>Status</th>
-                    <th>Deltar</th>
-                    <th>Namn</th>
-                    <th>Ytterligare information</th>
-                </tr>
-            </thead>
-            <tbody id="invitations-table-body">
-                <tr>
-                    <td colspan="6">Laddar deltagare...</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table class="table invitations-table">
+                <thead>
+                    <tr>
+                        <th>E-post</th>
+                        <th>Status</th>
+                        <th>Deltar</th>
+                        <!-- Custom field columns will be added dynamically by JavaScript -->
+                    </tr>
+                </thead>
+                <tbody id="invitations-table-body">
+                    <tr>
+                        <td colspan="3">Laddar deltagare...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div id="show-more-invitations" class="more-invitations" style="display: none;">
             <button id="toggle-invitations-btn" class="btn small-btn">Visa fler...</button>
         </div>

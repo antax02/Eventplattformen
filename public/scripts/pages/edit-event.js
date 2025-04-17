@@ -89,7 +89,7 @@ const processCSV = (file) => {
 
       const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
       if (!headers.includes('email')) {
-        reject('CSV-filen måste ha en "email" kolumn');
+        reject('CSV-filen måste ha en kolumn "email"');
         return;
       }
 
@@ -145,15 +145,25 @@ const displayInvitations = (invitations) => {
     return;
   }
 
+  // Get the invitations to display based on showing all or not
   const invitationsToShow = showingAllInvitations
     ? invitations
     : invitations.slice(0, maxDisplayedInvitations);
 
+  // Get table header and update it based on custom fields
+  const tableHeader = document.querySelector('.invitations-table thead tr');
+  if (tableHeader) {
+    updateTableHeader(tableHeader, currentCustomFields);
+  }
+
+  // Generate rows for each invitation
   const rows = invitationsToShow.map(inv => {
+    // Status cell (Responded)
     const respondedText = inv.responded ? 'Svarat' : 'Inte svarat';
     const respondedStyle = inv.responded ? 'color: green;' : 'color: orange;';
     const respondedDate = inv.respondedAt ? ` (${formatDateTime(inv.respondedAt)})` : '';
 
+    // Attending cell
     let attendingText = '-';
     let attendingStyle = '';
 
@@ -169,29 +179,32 @@ const displayInvitations = (invitations) => {
       }
     }
 
-    let customFieldsDisplay = '-';
-    if (inv.customFieldValues && Object.keys(inv.customFieldValues).length > 0) {
-      const valuesList = Object.entries(inv.customFieldValues).map(([key, value]) => {
-        const field = currentCustomFields.find(f => f.id === key);
-        const label = field ? field.label : key;
-        return `${label}: ${value}`;
-      });
-      customFieldsDisplay = valuesList.join(', ');
-    }
-
-    return `
+    // Start building the row HTML
+    let rowHtml = `
       <tr class="invitation-row">
         <td class="email-cell">${inv.email}</td>
         <td class="status-cell" style="${respondedStyle}">${respondedText}${respondedDate}</td>
         <td class="attending-cell" style="${attendingStyle}">${attendingText}</td>
-        <td class="name-cell">${inv.name || '-'}</td>
-        <td class="custom-fields-cell">${customFieldsDisplay}</td>
-      </tr>
     `;
+
+    // Add cells for each custom field
+    currentCustomFields.forEach(field => {
+      const fieldValue = inv.customFieldValues && inv.customFieldValues[field.id] 
+        ? inv.customFieldValues[field.id] 
+        : '-';
+      
+      rowHtml += `<td class="custom-field-cell">${fieldValue}</td>`;
+    });
+
+    // Close the row
+    rowHtml += `</tr>`;
+
+    return rowHtml;
   }).join('');
 
   invitationsTableBody.innerHTML = rows;
 
+  // Handle show more/less button
   const showMoreContainer = document.getElementById('show-more-invitations');
   const toggleBtn = document.getElementById('toggle-invitations-btn');
 
@@ -209,6 +222,24 @@ const displayInvitations = (invitations) => {
     showMoreContainer.style.display = 'none';
   }
 };
+
+// Function to update table header based on custom fields
+function updateTableHeader(headerRow, customFields) {
+  // Clear existing headers
+  headerRow.innerHTML = '';
+  
+  // Add standard columns
+  headerRow.innerHTML += `
+    <th>E-post</th>
+    <th>Status</th>
+    <th>Deltar</th>
+  `;
+  
+  // Add a column for each custom field
+  customFields.forEach(field => {
+    headerRow.innerHTML += `<th>${field.label}</th>`;
+  });
+}
 
 form.csv?.addEventListener('change', async (e) => {
   try {

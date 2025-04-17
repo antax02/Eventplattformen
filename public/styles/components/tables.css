@@ -25,19 +25,36 @@
     background-color: #f5f5f5;
 }
 
-/* Table responsive behavior - FIXED for Mobile */
-@media (max-width: 768px) {
-    /* This wrapper will make tables scroll horizontally on mobile */
-    .invitations-section {
-        overflow-x: auto;
-        width: 100%;
-        display: block;
-        -webkit-overflow-scrolling: touch; /* for better touch scrolling on iOS */
-    }
+/* Table wrapper for horizontal scrolling */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* for better touch scrolling on iOS */
+}
 
-    /* Ensure table takes full width of the container */
-    .invitations-table {
-        min-width: 700px; /* Ensures the table doesn't shrink too much */
+/* Improve mobile responsiveness */
+@media (max-width: 768px) {
+    .table th,
+    .table td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    /* Minimum widths for common columns */
+    .email-cell {
+        min-width: 140px;
+    }
+    
+    .status-cell {
+        min-width: 120px;
+    }
+    
+    .attending-cell {
+        min-width: 80px;
+    }
+    
+    .custom-field-cell {
+        min-width: 100px;
     }
 }
 
@@ -76,16 +93,8 @@
     text-align: center;
 }
 
-/* For backwards compatibility */
-.invitation-row {
-    /* Style already applied from table tr */
-}
-
-.email-cell, 
-.status-cell, 
-.attending-cell, 
-.name-cell, 
-.phone-cell, 
-.custom-fields-cell {
-    /* Styles applied from table td */
+/* Custom field cells */
+.custom-field-cell {
+    word-break: break-word;
+    max-width: 200px;
 }
