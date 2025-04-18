@@ -15,7 +15,6 @@ let showingAllInvitations = false;
 const maxDisplayedInvitations = 10;
 let currentCustomFields = [];
 
-// Make sure cancel button works
 document.addEventListener('DOMContentLoaded', () => {
   console.log("DOM loaded, setting up event handlers");
   
@@ -145,25 +144,20 @@ const displayInvitations = (invitations) => {
     return;
   }
 
-  // Get the invitations to display based on showing all or not
   const invitationsToShow = showingAllInvitations
     ? invitations
     : invitations.slice(0, maxDisplayedInvitations);
 
-  // Get table header and update it based on custom fields
   const tableHeader = document.querySelector('.invitations-table thead tr');
   if (tableHeader) {
     updateTableHeader(tableHeader, currentCustomFields);
   }
 
-  // Generate rows for each invitation
   const rows = invitationsToShow.map(inv => {
-    // Status cell (Responded)
     const respondedText = inv.responded ? 'Svarat' : 'Inte svarat';
     const respondedStyle = inv.responded ? 'color: green;' : 'color: orange;';
     const respondedDate = inv.respondedAt ? ` (${formatDateTime(inv.respondedAt)})` : '';
 
-    // Attending cell
     let attendingText = '-';
     let attendingStyle = '';
 
@@ -179,7 +173,6 @@ const displayInvitations = (invitations) => {
       }
     }
 
-    // Start building the row HTML
     let rowHtml = `
       <tr class="invitation-row">
         <td class="email-cell">${inv.email}</td>
@@ -187,7 +180,6 @@ const displayInvitations = (invitations) => {
         <td class="attending-cell" style="${attendingStyle}">${attendingText}</td>
     `;
 
-    // Add cells for each custom field
     currentCustomFields.forEach(field => {
       const fieldValue = inv.customFieldValues && inv.customFieldValues[field.id] 
         ? inv.customFieldValues[field.id] 
@@ -196,7 +188,6 @@ const displayInvitations = (invitations) => {
       rowHtml += `<td class="custom-field-cell">${fieldValue}</td>`;
     });
 
-    // Close the row
     rowHtml += `</tr>`;
 
     return rowHtml;
@@ -204,7 +195,6 @@ const displayInvitations = (invitations) => {
 
   invitationsTableBody.innerHTML = rows;
 
-  // Handle show more/less button
   const showMoreContainer = document.getElementById('show-more-invitations');
   const toggleBtn = document.getElementById('toggle-invitations-btn');
 
@@ -223,19 +213,15 @@ const displayInvitations = (invitations) => {
   }
 };
 
-// Function to update table header based on custom fields
 function updateTableHeader(headerRow, customFields) {
-  // Clear existing headers
   headerRow.innerHTML = '';
   
-  // Add standard columns
   headerRow.innerHTML += `
     <th>E-post</th>
     <th>Status</th>
     <th>Deltar</th>
   `;
   
-  // Add a column for each custom field
   customFields.forEach(field => {
     headerRow.innerHTML += `<th>${field.label}</th>`;
   });
@@ -337,9 +323,8 @@ async function handleDeleteEvent() {
   }
 }
 
-// Fix the form submission
 form.addEventListener('submit', async (e) => {
-  e.preventDefault(); // This is critical to prevent form submission
+  e.preventDefault();
   console.log("Form submitted");
 
   try {

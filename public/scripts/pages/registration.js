@@ -14,12 +14,10 @@ if (!eventId || !token) {
   window.location.href = './index.html';
 }
 
-// Remove onsubmit attribute if it exists
 if (form.hasAttribute('onsubmit')) {
   form.removeAttribute('onsubmit');
 }
 
-// Fix hidden required fields
 function fixHiddenRequiredFields() {
   document.querySelectorAll('[required]').forEach(el => {
     let currentNode = el;
@@ -69,24 +67,20 @@ async function loadEventData() {
 function generateCustomFields(fields) {
   customFieldsContainer.innerHTML = '';
   
-  // Check if there's a custom name field
   const hasNameField = fields.some(field => 
     field.id === 'field_name' || 
     field.label.toLowerCase() === 'namn' || 
     field.label.toLowerCase() === 'name'
   );
   
-  // Handle default fields visibility
   defaultFields.style.display = hasNameField ? 'none' : 'block';
   
-  // Disable default name field if hidden
   const defaultNameInput = document.querySelector('#default-fields input[name="name"]');
   if (defaultNameInput && hasNameField) {
     defaultNameInput.required = false;
     defaultNameInput.disabled = true;
   }
   
-  // Generate custom fields
   fields.forEach(field => {
     const fieldContainer = document.createElement('div');
     fieldContainer.className = 'registration-group custom-field';
@@ -122,7 +116,6 @@ form.addEventListener('submit', async (e) => {
       throw new Error('Kunde inte ladda eventdata');
     }
     
-    // Get attending value
     const attendingRadio = form.querySelector('input[name="attending"]:checked');
     if (!attendingRadio) {
       throw new Error('Du måste ange om du deltar eller inte');
@@ -130,7 +123,6 @@ form.addEventListener('submit', async (e) => {
     
     const attending = attendingRadio.value === 'yes';
     
-    // Collect custom field values
     const customFieldValues = {};
     if (eventData.customFields) {
       eventData.customFields.forEach(field => {
@@ -141,7 +133,6 @@ form.addEventListener('submit', async (e) => {
       });
     }
     
-    // Get name value
     let nameValue = null;
     const customNameField = eventData.customFields && eventData.customFields.find(field => 
       field.id === 'field_name' || 
@@ -157,7 +148,6 @@ form.addEventListener('submit', async (e) => {
       if (defaultNameInput) nameValue = defaultNameInput.value.trim();
     }
     
-    // Create updated invitation
     const updatedInvitations = [...eventData.invitations];
     updatedInvitations[invitationIndex] = {
       ...updatedInvitations[invitationIndex],

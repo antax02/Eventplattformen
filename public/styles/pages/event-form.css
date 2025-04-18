@@ -1,4 +1,3 @@
-/* Event form layout */
 .event-form {
     max-width: 800px;
     margin: 0 auto 40px;
@@ -26,7 +25,6 @@
     flex: 1;
 }
 
-/* Updated form actions for full width buttons */
 .form-actions {
     display: flex;
     gap: 16px;
@@ -35,11 +33,10 @@
 }
 
 .form-actions button {
-    flex: 1; /* Make buttons take equal width */
-    min-width: 120px; /* Ensure minimum width for readability */
+    flex: 1;
+    min-width: 120px;
 }
 
-/* Stack buttons on mobile */
 @media (max-width: 768px) {
     .form-actions {
         flex-direction: column;
@@ -51,7 +48,6 @@
     }
 }
 
-/* Custom fields section */
 .custom-fields-section {
     margin-top: 32px;
     margin-bottom: 32px;
@@ -68,7 +64,6 @@
     color: #666;
 }
 
-/* Invitations list section */
 .invitations-section {
     margin-top: 40px;
     margin-bottom: 40px;
@@ -78,13 +73,11 @@
     margin-bottom: 16px;
 }
 
-/* Delete event button */
 .delete-event {
     margin-top: 40px;
     text-align: center;
 }
 
-/* For backwards compatibility */
 #event-form,
 #edit-event-form {
     max-width: 800px;

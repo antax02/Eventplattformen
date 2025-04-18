@@ -63,13 +63,11 @@ export default class CustomFieldsInput {
         <button type="button" class="btn danger-btn small-btn remove-field" data-index="${index}">Ta bort</button>
       `;
 
-      // Changed field-label to field-name-input class
       const nameInput = fieldElement.querySelector('.field-name-input');
       const typeSelect = fieldElement.querySelector('.field-type');
       const requiredCheckbox = fieldElement.querySelector('.field-required');
       const removeButton = fieldElement.querySelector('.remove-field');
 
-      // Set up event listeners for each input element
       nameInput.addEventListener('input', () => {
         this.updateField(index);
       });
