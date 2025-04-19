@@ -14,12 +14,12 @@
 
     <form id="event-form" class="event-form">
         <div class="form-group">
-            <label class="form-label">Titel:</label>
+            <label class="form-label">Titel</label>
             <input type="text" name="title" class="input text-input" required>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Evenemangsdatum:</label>
+            <label class="form-label">Evenemangsdatum</label>
             <div class="datetime-input">
                 <input type="date" name="eventDate" class="input date-input" required>
                 <input type="time" name="eventTime" class="input time-input" required>
@@ -27,7 +27,7 @@
         </div>
         
         <div class="form-group">
-            <label class="form-label">Sista svarsdatum:</label>
+            <label class="form-label">Sista svarsdatum</label>
             <div class="datetime-input">
                 <input type="date" name="responseDeadline" class="input date-input" required>
                 <input type="time" name="responseTime" class="input time-input" required>
@@ -35,19 +35,19 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label">Beskrivning:</label>
+            <label class="form-label">Beskrivning</label>
             <textarea name="description" class="input textarea"></textarea>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Lägg till via CSV-fil:</label>
+            <label class="form-label">Lägg till via CSV-fil</label>
             <input type="file" name="csv" accept=".csv" class="input file-input">
             <small class="form-hint">CSV-filen måste ha en kolumn "email"</small>
         </div>
-
+        
         <div class="form-group">
-            <label class="form-label">Eller lägg till e-postadresser:</label>
-            <div id="email-input-container" class="email-tag-input"></div>
+            <label class="form-label">Eller lägg till e-postadresser</label>
+            <div id="email-input-containe   r" class="email-tag-input"></div>
             <input type="hidden" name="emailsJson" value="[]">
         </div>
 

@@ -40,7 +40,7 @@ export default class CustomFieldsInput {
 
       fieldElement.innerHTML = `
         <div class="field-row">
-          <label class="field-label">Fältnamn:</label>
+          <label class="field-label">Fältnamn</label>
           <input type="text" class="input text-input field-name-input" value="${field.label || ''}" required>
         </div>
         <div class="field-row">
