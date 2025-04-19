@@ -1,7 +1,7 @@
 .btn {
     display: inline-block;
-    background-color: #e7e7e7; 
-    color: #333;
+    background-color: #4a52c0;
+    color: white;
     border: 2px solid transparent;
     border-radius: 4px;
     padding: 8px 16px;
@@ -13,23 +13,15 @@
 }
 
 .btn:hover {
-    background-color: #f9f9f9;
-    border-color: #e7e7e7;
+    background-color: transparent;
+    border-color: #4a52c0;
+    color: #4a52c0;
+    text-decoration: none;
 }
 
 .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-}
-
-.primary-btn {
-    background-color: #4a6ee0;
-    color: white;
-}
-
-.primary-btn:hover {
-    background-color: #3a5dd0;
-    border-color: #4a6ee0;
 }
 
 .danger-btn {
@@ -38,30 +30,14 @@
 }
 
 .danger-btn:hover {
-    background-color: #f9f9f9;
+    background-color: transparent;
     border-color: #ef4444;
     color: #ef4444;
+    text-decoration: none;
 }
 
 .small-btn {
     padding: 4px 8px;
-    font-size: 0.875rem;
-}
-
-.redbtn {
-    background-color: #ef4444;
-    color: white;
-}
-
-.redbtn:hover {
-    background-color: #f9f9f9;
-    border-color: #ef4444;
-    color: #ef4444;
-}
-
-.remove-field,
-.remove-tag {
-    padding: 2px 6px;
     font-size: 0.875rem;
 }
 

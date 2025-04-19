@@ -38,19 +38,11 @@
 
 .input:focus {
     outline: none;
-    border-color: #4a6ee0;
+    border-color: #4a52c0;
 }
 
 .invalid {
     border-color: #ef4444;
-}
-
-.text-input,
-.email-input,
-.tel-input,
-.number-input,
-.password-input {
-
 }
 
 .textarea {
@@ -79,15 +71,15 @@
 }
 
 .file-input {
-    background-color: #e7e7e7;
+    background-color: #f9f9f9;
     padding: 10px;
     border: 2px solid transparent;
     cursor: pointer;
 }
 
 .file-input:hover {
-    background-color: #f9f9f9;
-    border-color: #e7e7e7;
+    background-color: #f0f0f0;
+    border-color: #ddd;
 }
 
 input::file-selector-button {
@@ -169,31 +161,6 @@ input::file-selector-button {
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
-}
-
-.input-field {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.text-input,
-.email-input,
-.date-input,
-.time-input,
-.number-input,
-.tel-input,
-.textarea-input,
-.select-input {
-
-}
-
-.checkbox-input,
-.radio-input {
-    margin-right: 8px;
 }
 
 .field-label {

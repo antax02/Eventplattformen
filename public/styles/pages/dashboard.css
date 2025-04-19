@@ -1,15 +1,4 @@
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-}
-
-.dashboard-title {
-    margin-bottom: 0;
-}
-
-.events-grid {
+#events-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
@@ -21,11 +10,11 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     padding: 20px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease;
+    border: 1px solid #eee;
 }
 
 .event-card:hover {
-    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -60,10 +49,6 @@
     text-align: center;
     padding: 40px 0;
     color: #666;
-}
-
-#events-list {
-    margin-bottom: 32px;
 }
 
 #logoutBtn {

@@ -98,8 +98,8 @@ const processCSV = (file) => {
         }
       });
 
-      if (emails.length === 0) reject('Inga giltiga e-postadresser hittades');
-      else resolve(emails);
+      // No longer require emails, just resolve with what we have
+      resolve(emails);
     };
     reader.onerror = () => reject('Kunde inte läsa filen');
     reader.readAsText(file);
@@ -378,6 +378,7 @@ form.addEventListener('submit', async (e) => {
       }
     }
 
+    // No requirement for invitations now
     if (newEmails.length > 0) {
       const currentEmails = eventData.invitations.map(inv => inv.email);
 
@@ -390,6 +391,7 @@ form.addEventListener('submit', async (e) => {
         updatedData.invitations = eventData.invitations;
       }
     } else {
+      // Keep existing invitations even if no new ones are added
       updatedData.invitations = eventData.invitations;
     }
 

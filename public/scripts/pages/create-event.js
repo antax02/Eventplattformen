@@ -52,8 +52,8 @@ const processCSV = (file) => {
         }
       });
 
-      if (emails.length === 0) reject('Inga giltiga e-postadresser hittades');
-      else resolve(emails);
+      // No longer require emails, just resolve with what we have
+      resolve(emails);
     };
     reader.onerror = () => reject('Kunde inte läsa filen');
     reader.readAsText(file);
@@ -139,10 +139,8 @@ form.addEventListener('submit', async (e) => {
       }
     }
 
-    if (emails.length === 0) {
-      throw new Error('Ange minst en giltig e-postadress');
-    }
-
+    // Remove email validation requirement
+    // Just remove duplicates if there are any emails
     emails = [...new Set(emails)];
 
     const eventId = crypto.randomUUID();
@@ -163,7 +161,7 @@ form.addEventListener('submit', async (e) => {
       description: form.description.value,
       owner: user.uid,
       createdAt: serverTimestamp(),
-      invitations,
+      invitations,  // This can be an empty array now
       customFields
     };
 
@@ -181,7 +179,12 @@ form.addEventListener('submit', async (e) => {
       timeStyle: 'short'
     };
 
-    alert(`Evenemang skapat med ${emails.length} inbjudna!\nSista anmälningsdag: ${responseDateTime.toLocaleString('sv-SE', options)}`);
+    // Update success message to handle zero emails
+    const message = emails.length > 0
+      ? `Evenemang skapat med ${emails.length} inbjudna!\nSista anmälningsdag: ${responseDateTime.toLocaleString('sv-SE', options)}`
+      : `Evenemang skapat!\nSista anmälningsdag: ${responseDateTime.toLocaleString('sv-SE', options)}`;
+    
+    alert(message);
     window.location.href = './dashboard.html';
 
   } catch (error) {
