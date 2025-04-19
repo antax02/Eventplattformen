@@ -64,12 +64,12 @@ const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-const generateInvitations = (emails, deadline) => {
+const generateInvitations = (emails, responseDeadline) => {
   return emails.map(email => ({
     email,
     token: crypto.randomUUID(),
     responded: false,
-    expires: deadline
+    expires: responseDeadline
   }));
 };
 

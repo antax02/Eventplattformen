@@ -7,9 +7,19 @@ initializeApp();
 const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
 
 function formatDateTime(timestamp) {
-  if (!timestamp || !timestamp.seconds) return "N/A";
+  if (!timestamp) return "N/A";
   
-  const date = new Date(timestamp.seconds * 1000);
+  let date;
+  if (timestamp.seconds) {
+    date = new Date(timestamp.seconds * 1000);
+  } else if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+    date = timestamp.toDate();
+  } else if (timestamp instanceof Date) {
+    date = timestamp;
+  } else {
+    date = new Date(timestamp);
+  }
+  
   const options = { 
     dateStyle: 'medium',
     timeStyle: 'short'
@@ -19,8 +29,6 @@ function formatDateTime(timestamp) {
 }
 
 async function sendInvitations(eventId, eventData, invitations, resending = false) {
-  console.log(`📧 Sending ${invitations.length} invitations for event ID: ${eventId}`);
-
   const eventDateFormatted = formatDateTime(eventData.eventDate);
   const deadlineFormatted = formatDateTime(eventData.responseDeadline);
 
@@ -47,9 +55,8 @@ async function sendInvitations(eventId, eventData, invitations, resending = fals
 
   try {
     await Promise.all(sendEmailPromises);
-    console.log(`✅ Successfully sent ${invitations.length} emails`);
   } catch (error) {
-    console.error('❌ Email sending error:', error.response?.body?.errors || error);
+    console.error('Email sending error:', error.response?.body?.errors || error);
   }
 }
 
@@ -62,12 +69,8 @@ exports.onEventCreated = onDocumentCreated(
     const eventId = event.params.eventId;
     const invitations = eventData.invitations || [];
 
-    console.log("🎉 New event created! ID:", eventId);
-
     if (invitations.length > 0) {
       await sendInvitations(eventId, eventData, invitations);
-    } else {
-      console.log("⚠️ No invitations to send");
     }
 
     return null;
@@ -83,8 +86,6 @@ exports.onEventUpdated = onDocumentUpdated(
     const afterData = event.data.after.data();
     const eventId = event.params.eventId;
 
-    console.log(`✏️ Event updated: ${eventId}`);
-
     const oldInvitations = beforeData.invitations || [];
     const newInvitations = afterData.invitations || [];
 
@@ -97,8 +98,6 @@ exports.onEventUpdated = onDocumentUpdated(
     if (addedInvitations.length > 0 || resendToAll) {
       const invitationsToSend = resendToAll ? newInvitations : addedInvitations;
       await sendInvitations(eventId, afterData, invitationsToSend, resendToAll);
-    } else {
-      console.log("✅ No new invitations to send");
     }
 
     return null;

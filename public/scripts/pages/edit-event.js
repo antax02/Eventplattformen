@@ -16,17 +16,11 @@ const maxDisplayedInvitations = 10;
 let currentCustomFields = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("DOM loaded, setting up event handlers");
-  
   const cancelButton = document.getElementById('cancel-btn');
   if (cancelButton) {
-    console.log("Cancel button found, adding event listener");
     cancelButton.addEventListener('click', () => {
-      console.log("Cancel button clicked");
       window.location.href = './dashboard.html';
     });
-  } else {
-    console.error("Cancel button not found!");
   }
 
   const emailInputContainer = document.getElementById('email-input-container');
@@ -116,12 +110,12 @@ const validateEmail = (email) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-const generateInvitations = (emails, deadline) => {
+const generateInvitations = (emails, responseDeadline) => {
   return emails.map(email => ({
     email,
     token: crypto.randomUUID(),
     responded: false,
-    expires: deadline
+    expires: responseDeadline
   }));
 };
 
@@ -325,14 +319,11 @@ async function handleDeleteEvent() {
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  console.log("Form submitted");
 
   try {
     if (!eventId) {
       throw new Error("Ingen händelse-ID angiven!");
     }
-    
-    console.log("Event ID:", eventId);
     
     const eventRef = doc(db, "events", eventId);
     const eventSnap = await getDoc(eventRef);
