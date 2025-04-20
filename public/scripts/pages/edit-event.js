@@ -38,6 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
       currentCustomFields = fields;
     }
   });
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+          auth.signOut().then(() => {
+              window.location.href = './login.html';
+          }).catch(error => {
+              console.error("Logout error:", error);
+          });
+      });
+  }
   
   const deleteButton = document.getElementById('delete-event-btn');
   if (deleteButton) {
@@ -378,7 +389,6 @@ form.addEventListener('submit', async (e) => {
       }
     }
 
-    // No requirement for invitations now
     if (newEmails.length > 0) {
       const currentEmails = eventData.invitations.map(inv => inv.email);
 
@@ -391,7 +401,6 @@ form.addEventListener('submit', async (e) => {
         updatedData.invitations = eventData.invitations;
       }
     } else {
-      // Keep existing invitations even if no new ones are added
       updatedData.invitations = eventData.invitations;
     }
 

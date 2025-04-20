@@ -1,8 +1,14 @@
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px;
+}
+
 #events-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
-    margin-bottom: 32px;
+    margin-top: 24px;
 }
 
 .event-card {
@@ -39,18 +45,34 @@
     text-align: right;
 }
 
-.create-event-btn {
-    display: block;
-    margin: 32px auto;
-    text-align: center;
-}
-
 .events-empty {
     text-align: center;
     padding: 40px 0;
     color: #666;
 }
 
-#logoutBtn {
-    margin-bottom: 24px;
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .main-content {
+        padding: 16px;
+    }
+    
+    #events-list {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #events-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .event-card {
+        padding: 16px;
+    }
+    
+    .card-title {
+        font-size: 1.125rem;
+    }
 }

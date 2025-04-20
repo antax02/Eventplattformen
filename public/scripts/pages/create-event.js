@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'field_name', label: 'Namn', type: 'text', required: true }
     ]
   });
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+          auth.signOut().then(() => {
+              window.location.href = './login.html';
+          }).catch(error => {
+              console.error("Logout error:", error);
+          });
+      });
+  }
 });
 
 const processCSV = (file) => {

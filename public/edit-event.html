@@ -6,14 +6,27 @@
     <title>Redigera evenemang</title>
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/components/buttons.css">
+    <link rel="stylesheet" href="./styles/components/header.css">
     <link rel="stylesheet" href="./styles/components/inputs.css">
     <link rel="stylesheet" href="./styles/components/tables.css">
     <link rel="stylesheet" href="./styles/pages/event-form.css">
 </head>
 <body>
-    <h1 class="event-title">Redigera evenemang</h1>
+    <header class="header">
+        <div class="header-container">
+            <a href="./dashboard.html" class="header-logo">
+                <img src="images/ep-transp-320.png" alt="EventPlattform Logo" class="logo-image">
+            </a>
+            <nav class="header-nav">
+                <button id="logoutBtn" class="btn btn-header-outline">Logga ut</button>
+            </nav>
+        </div>
+    </header>
 
-    <form id="edit-event-form" class="event-form">
+    <main class="main-content">
+        <h1 class="event-title">Redigera evenemang</h1>
+
+        <form id="edit-event-form" class="event-form">
         <div class="form-group">
             <label class="form-label">Titel</label>
             <input type="text" name="title" class="input text-input" required>
@@ -66,8 +79,8 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" id="cancel-btn" class="btn danger-btn">Avbryt</button>
-            <button type="submit" class="btn">Uppdatera evenemang</button>
+            <button type="submit" class="btn btn-primary">Uppdatera evenemang</button>
+            <button type="button" id="cancel-btn" class="btn btn-secondary">Avbryt</button>
         </div>
     </form>
 

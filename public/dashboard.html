@@ -2,22 +2,34 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mina evenemang</title>
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/components/buttons.css">
+    <link rel="stylesheet" href="./styles/components/header.css">
     <link rel="stylesheet" href="./styles/pages/dashboard.css">
 </head>
 <body>
-    <h1>Mina evenemang</h1>
-    <button id="logoutBtn" class="btn">Logga ut</button>
+    <header class="header">
+        <div class="header-container">
+            <a href="./dashboard.html" class="header-logo">
+                <img src="images/ep-transp-320.png" alt="EventPlattform Logo" class="logo-image">
+            </a>
+            <nav class="header-nav">
+                <a href="./create-event.html" class="btn btn-header-primary">
+                    Skapa nytt evenemang
+                </a>
+                <button id="logoutBtn" class="btn btn-header-outline">Logga ut</button>
+            </nav>
+        </div>
+    </header>
 
-    <div id="events-list">
-        <div>Laddar evenemang...</div>
-    </div>
-
-    <a href="./create-event.html" class="btn create-event-btn">
-        Skapa nytt evenemang
-    </a>
+    <main class="main-content">
+        <h1>Mina evenemang</h1>
+        <div id="events-list">
+            <div>Laddar evenemang...</div>
+        </div>
+    </main>
 
     <script type="module" src="./scripts/pages/dashboard.js"></script>
 </body>

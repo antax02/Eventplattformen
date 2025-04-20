@@ -16,10 +16,13 @@
     width: 100%;
 }
 
-.login-title {
-    margin-bottom: 24px;
-    font-size: 1.5rem;
-    color: #333;
+.login-logo-container {
+    margin-bottom: 32px;
+}
+
+.login-logo {
+    max-width: 200px;
+    height: auto;
 }
 
 .login-button {

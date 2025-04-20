@@ -6,62 +6,76 @@
     <title>Skapa evenemang</title>
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/components/buttons.css">
+    <link rel="stylesheet" href="./styles/components/header.css">
     <link rel="stylesheet" href="./styles/components/inputs.css">
     <link rel="stylesheet" href="./styles/pages/event-form.css">
 </head>
 <body>
-    <h1 class="event-title">Skapa evenemang</h1>
-
-    <form id="event-form" class="event-form">
-        <div class="form-group">
-            <label class="form-label">Titel</label>
-            <input type="text" name="title" class="input text-input" required>
+    <header class="header">
+        <div class="header-container">
+            <a href="./dashboard.html" class="header-logo">
+                <img src="images/ep-transp-320.png" alt="EventPlattform Logo" class="logo-image">
+            </a>
+            <nav class="header-nav">
+                <button id="logoutBtn" class="btn btn-header-outline">Logga ut</button>
+            </nav>
         </div>
+    </header>
 
-        <div class="form-group">
-            <label class="form-label">Evenemangsdatum</label>
-            <div class="datetime-input">
-                <input type="date" name="eventDate" class="input date-input" required>
-                <input type="time" name="eventTime" class="input time-input" required>
+    <main class="main-content">
+        <h1 class="event-title">Skapa evenemang</h1>
+
+        <form id="event-form" class="event-form">
+            <div class="form-group">
+                <label class="form-label">Titel</label>
+                <input type="text" name="title" class="input text-input" required>
             </div>
-        </div>
-        
-        <div class="form-group">
-            <label class="form-label">Sista svarsdatum</label>
-            <div class="datetime-input">
-                <input type="date" name="responseDeadline" class="input date-input" required>
-                <input type="time" name="responseTime" class="input time-input" required>
+
+            <div class="form-group">
+                <label class="form-label">Evenemangsdatum</label>
+                <div class="datetime-input">
+                    <input type="date" name="eventDate" class="input date-input" required>
+                    <input type="time" name="eventTime" class="input time-input" required>
+                </div>
             </div>
-        </div>
+            
+            <div class="form-group">
+                <label class="form-label">Sista svarsdatum</label>
+                <div class="datetime-input">
+                    <input type="date" name="responseDeadline" class="input date-input" required>
+                    <input type="time" name="responseTime" class="input time-input" required>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label class="form-label">Beskrivning</label>
-            <textarea name="description" class="input textarea"></textarea>
-        </div>
+            <div class="form-group">
+                <label class="form-label">Beskrivning</label>
+                <textarea name="description" class="input textarea"></textarea>
+            </div>
 
-        <div class="form-group">
-            <label class="form-label">Lägg till via CSV-fil</label>
-            <input type="file" name="csv" accept=".csv" class="input file-input">
-            <small class="form-hint">CSV-filen måste ha en kolumn "email"</small>
-        </div>
-        
-        <div class="form-group">
-            <label class="form-label">Eller lägg till e-postadresser</label>
-            <div id="email-input-container" class="email-tag-input"></div>
-            <input type="hidden" name="emailsJson" value="[]">
-        </div>
+            <div class="form-group">
+                <label class="form-label">Lägg till via CSV-fil</label>
+                <input type="file" name="csv" accept=".csv" class="input file-input">
+                <small class="form-hint">CSV-filen måste ha en kolumn "email"</small>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Eller lägg till e-postadresser</label>
+                <div id="email-input-container" class="email-tag-input"></div>
+                <input type="hidden" name="emailsJson" value="[]">
+            </div>
 
-        <div class="custom-fields-section">
-            <h3 class="custom-fields-title">Anpassade fält för anmälan</h3>
-            <p class="custom-fields-description">Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
-            <div id="custom-fields-container" class="custom-fields"></div>
-        </div>
+            <div class="custom-fields-section">
+                <h3 class="custom-fields-title">Anpassade fält för anmälan</h3>
+                <p class="custom-fields-description">Lägg till de fält du vill att deltagarna ska fylla i vid anmälan</p>
+                <div id="custom-fields-container" class="custom-fields"></div>
+            </div>
 
-        <div class="form-actions">
-            <button type="button" id="cancel-btn" class="btn danger-btn">Avbryt</button>
-            <button type="submit" class="btn">Skapa evenemang</button>
-        </div>
-    </form>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Skapa evenemang</button>
+                <button type="button" id="cancel-btn" class="btn btn-secondary">Avbryt</button>
+            </div>
+        </form>
+    </main>
 
     <script type="module" src="./scripts/components/email-input.js"></script>
     <script type="module" src="./scripts/components/custom-fields-input.js"></script>
