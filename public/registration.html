@@ -8,41 +8,50 @@
     <link rel="stylesheet" href="./styles/components/buttons.css">
     <link rel="stylesheet" href="./styles/components/inputs.css">
     <link rel="stylesheet" href="./styles/pages/registration.css">
+    <link rel="stylesheet" href="./styles/pages/index.css">
 </head>
 <body>
-    <div class="container">
-        <form id="registration-form" class="registration-form">
-            <div class="registration-group">
-                <label class="registration-label">Deltar du? *</label>
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="attending" value="yes" class="radio" required> Ja
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="attending" value="no" class="radio" required> Nej
-                    </label>
-                </div>
-            </div>
-
-            <div id="default-fields">
-                <div class="registration-group">
-                    <label class="registration-label" for="default-name">Fullständigt namn *</label>
-                    <input type="text" name="name" id="default-name" class="registration-input" required>
-                </div>
-            </div>
-
-            <div id="custom-fields-container" class="custom-fields"></div>
-
-            <div class="registration-actions">
-                <button type="submit" class="submit-button">
-                    Skicka anmälan
-                </button>
+    <div class="login">
+        <div class="registration-container">
+            <div class="login-logo-container">
+                <img src="images/ep-transp-320.png" alt="EventPlattform Logo" class="login-logo">
             </div>
             
-            <div class="registration-footer">
+            <form id="registration-form" class="registration-form">
+                <h2 class="registration-title">Anmäl dig till <span id="event-title">evenemang</span></h2>
+                
+                <div class="registration-group">
+                    <label class="registration-label">Deltar du? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attending" value="yes" class="radio" required> Ja
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attending" value="no" class="radio" required> Nej
+                        </label>
+                    </div>
+                </div>
+
+                <div id="default-fields">
+                    <div class="registration-group">
+                        <label class="registration-label" for="default-name">Fullständigt namn *</label>
+                        <input type="text" name="name" id="default-name" class="registration-input" required>
+                    </div>
+                </div>
+
+                <div id="custom-fields-container" class="custom-fields"></div>
+
+                <div class="registration-actions">
+                    <button type="submit" class="submit-button">
+                        Skicka anmälan
+                    </button>
+                </div>
+            </form>
+            
+            <div class="login-footer">
                 <a href="./index.html">Tillbaka till startsidan</a>
             </div>
-        </form>
+        </div>
     </div>
 
     <script type="module" src="./scripts/pages/registration.js"></script>

@@ -4,6 +4,7 @@ import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0
 const form = document.getElementById('registration-form');
 const customFieldsContainer = document.getElementById('custom-fields-container');
 const defaultFields = document.getElementById('default-fields');
+const eventTitleSpan = document.getElementById('event-title');
 const urlParams = new URLSearchParams(window.location.search);
 const eventId = urlParams.get('eventId');
 const token = urlParams.get('token');
@@ -54,6 +55,12 @@ async function loadEventData() {
 
     if (eventData.responseDeadline.toDate() < new Date()) {
       throw new Error('Anmälningsperioden har utgått');
+    }
+
+    // Update the event title in the header
+    if (eventData.title) {
+      eventTitleSpan.textContent = eventData.title;
+      document.title = `Anmälan: ${eventData.title}`;
     }
 
     generateCustomFields(eventData.customFields || []);

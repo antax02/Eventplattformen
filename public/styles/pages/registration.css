@@ -1,19 +1,32 @@
-.registration-form {
-    max-width: 500px;
-    margin: 40px auto;
+.registration-container {
     background-color: white;
     padding: 32px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.registration-form {
+    max-width: 100%;
+    margin: 0;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .registration-title {
-    text-align: center;
-    margin-bottom: 32px;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    color: #333;
 }
 
 .registration-group {
     margin-bottom: 24px;
+    text-align: left;
 }
 
 .registration-label {
@@ -27,6 +40,7 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 1rem;
 }
 
 .radio-group {
@@ -54,51 +68,53 @@
     padding: 12px;
     background-color: #4a52c0;
     color: white;
-    border: none;
+    border: 2px solid transparent;
     border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .submit-button:hover {
-    background-color: #3a42a0;
-}
-
-.registration-footer {
-    margin-top: 24px;
-    text-align: center;
+    background-color: transparent;
+    border-color: #4a52c0;
+    color: #4a52c0;
 }
 
 .custom-fields {
     margin-top: 24px;
+    text-align: left;
 }
 
 .custom-field {
     margin-bottom: 16px;
 }
 
+/* Thank you page styles */
 .thank-you {
     text-align: center;
-    padding: 64px 20px;
+    padding: 20px 0;
 }
 
 .thank-you-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 16px;
+    color: #333;
 }
 
 .thank-you-message {
-    margin-bottom: 32px;
-    color: #666;
-}
-
-#registration-form {
-    max-width: 500px;
-    margin: 40px auto;
-}
-
-#default-fields,
-#custom-fields-container {
     margin-bottom: 24px;
+    color: #555;
+    line-height: 1.6;
+}
+
+@media screen and (max-width: 600px) {
+    .registration-container {
+        padding: 24px 16px;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 12px;
+    }
 }
