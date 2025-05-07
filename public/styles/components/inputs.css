@@ -41,10 +41,6 @@
     border-color: #4a52c0;
 }
 
-.invalid {
-    border-color: #ef4444;
-}
-
 .textarea {
     min-height: 100px;
     resize: vertical;

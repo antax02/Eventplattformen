@@ -1,11 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sidan hittades inte - EventPlattformen</title>
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/components/buttons.css">
+    <link rel="stylesheet" href="./styles/components/header.css">
+    <link rel="stylesheet" href="./styles/pages/index.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            flex: 1;
+        }
+        
+        .error-container {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 700;
+            color: #4a52c0;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+        
+        .error-message {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .error-actions {
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 100px;
+            }
+            
+            .error-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    404
+    <header class="header">
+        <div class="header-container">
+            <a href="./index.html" class="header-logo">
+                <img src="images/ep-transp-320.png" alt="EventPlattform Logo" class="logo-image">
+            </a>
+            <nav class="header-nav">
+                <a href="./login.html" class="btn btn-header-outline">Logga in</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Sidan hittades inte</h2>
+            <p class="error-message">Sidan du letar efter finns inte eller har flyttats. Kontrollera webbadressen och försök igen.</p>
+            <div class="error-actions">
+                <a href="./index.html" class="btn btn-primary">Gå till startsidan</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="./login.html" class="footer-link">Logga in</a>
+            <a href="#" class="footer-link">Kontakt</a>
+            <a href="#" class="footer-link">Om oss</a>
+        </nav>
+        <p class="copyright">© 2025 EventPlattformen</p>
+    </footer>
 </body>
 </html>
