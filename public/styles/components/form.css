@@ -95,7 +95,6 @@
     text-align: center;
 }
 
-/* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
     .main-content {
         padding: 16px;

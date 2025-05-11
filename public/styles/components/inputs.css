@@ -188,16 +188,11 @@ input::file-selector-button {
 .remove-field {
     background-color: #ef4444;
     color: white;
-    border: none;
     padding: 6px 12px;
     font-size: 0.875rem;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-}
-
-.remove-field:hover {
-    background-color: #dc2626;
 }
 
 .add-field-btn {

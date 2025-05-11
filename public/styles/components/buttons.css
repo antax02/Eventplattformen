@@ -27,11 +27,13 @@
 .danger-btn {
     background-color: #ef4444;
     color: white;
+    border: 2px solid #ffffff00;
 }
 
 .danger-btn:hover {
     background-color: transparent;
     border-color: #ef4444;
+    border: 2px solid #ef4444;
     color: #ef4444;
     text-decoration: none;
 }
