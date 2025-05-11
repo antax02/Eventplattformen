@@ -109,7 +109,6 @@ const processCSV = (file) => {
         }
       });
 
-      // No longer require emails, just resolve with what we have
       resolve(emails);
     };
     reader.onerror = () => reject('Kunde inte läsa filen');

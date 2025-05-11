@@ -57,7 +57,6 @@ async function loadEventData() {
       throw new Error('Anmälningsperioden har utgått');
     }
 
-    // Update the event title in the header
     if (eventData.title) {
       eventTitleSpan.textContent = eventData.title;
       document.title = `Anmälan: ${eventData.title}`;
